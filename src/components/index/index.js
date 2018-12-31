@@ -1,14 +1,23 @@
 import React, { Component } from 'react';
 import './index.css'
- 
-class CCC extends Component {
+
+class index extends Component {
+  state = {
+    songlist: [],
+    picUrl: ''
+  }
+
+  componentDidMount () {
+
+  }
+
   render() {
     return (
-      <div className="index"> 
+      <div className="index">
           CCC页
       </div>
     );
   }
 }
- 
-export default CCC;
+
+export default index;
