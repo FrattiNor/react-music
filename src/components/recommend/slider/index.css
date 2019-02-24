@@ -1,0 +1,48 @@
+.slider {
+    position: relative;
+    overflow: hidden;
+    width: 750px;
+    font-size: 0;
+}
+
+.sliderBox {
+    white-space: nowrap;
+}
+
+.pointBox {
+    position: absolute;
+    box-sizing: border-box;
+    width: 750px;
+    height: 10%;
+    bottom: 5%;
+    white-space: nowrap;
+    text-align: center;
+}
+
+.sliderA {
+    overflow: hidden;
+    position: relative;
+    display: inline-block;
+}
+
+.sliderImg {
+    display: block;
+    width: 96%;
+    margin: auto;
+    border-radius: 10px;
+}
+
+.point {
+    width: 4%;
+    padding-bottom: 4%;
+    height: 0;
+    margin-left: 4%;
+    float: left;
+    background-color: #bbb;
+    transition: 0.3s;
+}
+
+.on {
+    background-color: #fff;
+    width: 8%;
+}

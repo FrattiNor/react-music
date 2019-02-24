@@ -1,4 +1,143 @@
 .index {
     width: 750px;
-    font-size: 100px;
+    height: 100%;
+    font-size: 0;
+}
+
+
+/* 头部 */
+
+.header {
+    width: 750px;
+    height: 200px;
+    background-color: #D43B33;
+}
+
+.header_left {
+    display: inline-block;
+    width: 100px;
+    height: 100px;
+    vertical-align: top;
+}
+
+.header_img {
+    width: 50px;
+    display: block;
+    margin: auto;
+    margin-top: 25px;
+}
+
+.header_content {
+    font-size: 30px;
+    display: inline-block;
+    width: 550px;
+    height: 100px;
+    line-height: 100px;
+    text-align: center;
+    vertical-align: top;
+    color: #fff;
+}
+
+.header_right {
+    display: inline-block;
+    width: 100px;
+    height: 100px;
+}
+
+.header_bottom {
+    height: 100px;
+    width: 750px;
+}
+
+.header_bottom_font {
+    color: #fff;
+    text-align: center;
+    font-size: 26px;
+    display: inline-block;
+    width: calc( 100% / 3);
+    height: 100px;
+    line-height: 100px;
+    position: relative;
+}
+
+.header_bottom_font2::after {
+    box-sizing: border-box;
+    content: "";
+    position: absolute;
+    width: 80px;
+    height: 0;
+    border:  2px solid #fff;
+    bottom: 15px;
+    left: 85px;
+    background-color: #fff;
+    border-radius: 2px;
+    animation: header_bottom_font_change1 0.7s;
+}
+
+.header_bottom_font2::before {
+    box-sizing: border-box;
+    content: "";
+    position: absolute;
+    width: 250px;
+    height: 80px;
+    top: 15px;
+    left: 0;
+    background-color: RGBA(0,0,0,0);
+    animation: header_bottom_font_change2 0.7s;
+}
+
+@keyframes header_bottom_font_change1 {
+    0% {
+        width: 0;
+        left: 125px;
+    }
+    100% {
+        left: 85px;
+        width: 80px;
+    }
+}
+
+@keyframes header_bottom_font_change2 {
+    0% {
+        background-color: RGBA(0,0,0,0.6);
+    }
+    100% {
+        background-color: RGBA(0,0,0,0);
+    }
+}
+
+
+/* 主体 */
+
+.body {
+    width: 750px;
+    height: calc( 100% - 300px );
+    background-color: #777;
+    overflow: hidden;
+}
+
+.body_box {
+    width: 2250px;
+}
+
+.body_page {
+    width: 750px;
+    display: inline-block;
+    position: relative;
+}
+
+.body_page_box {
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+
+
+/* 底部 */
+
+.footer {
+    width: 750px;
+    height: 100px;
+    background-color: #333;
 }

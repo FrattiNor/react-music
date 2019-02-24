@@ -1,6 +1,8 @@
 const rewirePostcss = require('react-app-rewire-postcss');
 const pxtorem = require('postcss-pxtorem');
-module.exports = function override(config, env) {
+const { injectBabelPlugin } = require('react-app-rewired');
+
+module.exports = function override(config) {
     // do stuff with the webpack config...
     // require('react-app-rewire-postcss')(config, {
     //     plugins: loader => [
@@ -15,13 +17,16 @@ module.exports = function override(config, env) {
     //         })
     //     ]
     // });
-    config = rewirePostcss(config,{
+    config = injectBabelPlugin(['babel-plugin-transform-decorators-legacy', { 'legacy': true }], config)
+    config = rewirePostcss(config, {
         plugins: () => [
             pxtorem({
                 rootValue: 32,    //以32px为准，不同方案修改这里
                 minPixelValue: 0,
+                propList: ['*']
             })
-        ],
+        ]
     });
+
     return config;
 };
