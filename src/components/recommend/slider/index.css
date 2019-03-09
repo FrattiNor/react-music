@@ -5,6 +5,15 @@
     font-size: 0;
 }
 
+.slider_bcg {
+    width: 750px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 180px;
+    background-color: #D43B33;
+}
+
 .sliderBox {
     white-space: nowrap;
 }

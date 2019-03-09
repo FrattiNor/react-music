@@ -10,7 +10,8 @@
     "react-app-rewire-postcss": "^3.0.2",
     "react-app-rewired": "^1.6.2",
     "react-dom": "^16.7.0",
-    "react-scripts": "^1.0.14"
+    "react-scripts": "^1.0.14",
+    "yarn": "^1.13.0"
   },
   "scripts": {
     "start": "react-app-rewired start",

@@ -6,7 +6,7 @@ import './index.css'
     index
 }))
 
-class slider extends Component {
+class Slider extends Component {
     state = {
         theSilder: [],
         SilderFirst: [],
@@ -29,7 +29,7 @@ class slider extends Component {
             type: 'index/getSlider'
         })
             .then((res) => {
-                console.log(res)
+                // console.log(res)
                 let sliderLength = res.banners.length;
 
                 this.setState({
@@ -108,7 +108,6 @@ class slider extends Component {
     // 当图片在最左或最右边时修改到正确位置
     changeFirstLast() {
         const { length } = this.state
-        console.log(length)
         if (this.state.index === 0) {
             this.setState({
                 time: 0,
@@ -160,6 +159,8 @@ class slider extends Component {
         return (
             <div className="slider" ref="slider">
 
+                <div className="slider_bcg"></div>
+
                 <div className="sliderBox" onTouchEnd={e => this.touchEnd(e)} onTouchMove={e => this.touchMove(e)}  onTouchStart={e => this.touchStart(e)} style={slideBoxStyle}>
                     <a className="sliderA" href={this.state.SilderLast.linkUrl} style={sliderPicStyle}>
                         <img alt="slider" className="sliderImg" src={this.state.SilderLast.imageUrl} />
@@ -207,4 +208,4 @@ class slider extends Component {
     }
 }
 
-export default slider;
+export default Slider;

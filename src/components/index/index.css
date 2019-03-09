@@ -112,22 +112,35 @@
 .body {
     width: 750px;
     height: calc( 100% - 300px );
-    background-color: #777;
+    background-color: #fff;
     overflow: hidden;
 }
 
 .body_box {
     width: 2250px;
+    height: 100%;
 }
 
 .body_page {
     width: 750px;
+    height: 100%;
     display: inline-block;
     position: relative;
+    overflow: hidden;
 }
+/* .body_page::-webkit-scrollbar {display: none;} */
 
 .body_page_box {
-    position: absolute;
+    position: relative;
+    width: 770px;
+    height: 100%;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.body_page_box_box {
+    width: 750px;
+    position: relative;
     top: 0;
     left: 0;
 }
