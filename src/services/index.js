@@ -32,5 +32,9 @@ export const getRankSong = (id) => {
     return fetchRes(url+`/top/list?idx=${id}`)
 }
 
+export const search = ({keywords, type}) => {
+    return fetchRes(url+`/search?keywords=${keywords}&type=${type}`)
+}
+
 
 
