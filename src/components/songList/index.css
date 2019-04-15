@@ -60,17 +60,28 @@
 }
 
 .official_box {
-    height: 180px;
+    height: 135px;
     position: absolute;
-    top: 10px;
+    top: 65px;
     left: 0;
+}
+
+.official_introduction_name {
+    height: 65px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    font-size: 30px;
+    color: #000;
+    line-height: 65px;
+    font-weight: 800;
 }
 
 .introduction {
     font-size: 24px;
     color: #444;
-    height: 60px;
-    line-height: 60px;
+    height: 45px;
+    line-height: 45px;
 }
 
 

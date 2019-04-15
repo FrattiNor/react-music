@@ -89,7 +89,7 @@
 
 .search_body_body {
     width: 50%;
-    height: calc( 90% + 200px );
+    height: calc( 100% - 120px );
     display: inline-block;
     overflow-y: auto;
     overflow-x: hidden;

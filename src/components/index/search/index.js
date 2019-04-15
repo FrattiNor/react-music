@@ -117,12 +117,16 @@ class search extends Component {
     }
 
     changeMusic = (item) => {
-		const { dispatch } = this.props;
+        const { dispatch } = this.props;
+        let ar = ''
+        item.ar.forEach((item, index) => {
+            ar += item.name + ' '
+        })
 		let payload = {
 			id: item.id,
 			name: item.name,
 			picUrl: item.al.picUrl,
-			ar: item.ar[0].name,
+			ar: ar,
 			src: `https://music.163.com/song/media/outer/url?id=${item.id}.mp3`
 		}
 		dispatch({

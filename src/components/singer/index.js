@@ -25,6 +25,7 @@ class singer extends Component {
 				})
 				.then((res)=>{
 					if(res.code == 200) {
+						console.log(res)
 						this.setState({
 							list: res.artists || res.list.artists
 						})
@@ -48,7 +49,13 @@ class singer extends Component {
 	songBack = () => {
 		const { dispatch } = this.props;
 		dispatch(routerRedux.goBack())
-    }
+	}
+	
+	pushSingerDetail = (item) => {
+		sessionStorage.setItem('singerDetail',JSON.stringify({name: item.name, id: item.id, pic: item.img1v1Url}))
+		const { dispatch } = this.props;
+		dispatch(routerRedux.push('/singerDetail'))
+	}
     
 
 	render() {
@@ -65,7 +72,7 @@ class singer extends Component {
 				<div className="songBody">
 				{
 					list.map((item, index)=>{
-						return <div className="songList" key={index}>
+						return <div className="songList" key={index} onClick={ () => this.pushSingerDetail(item) }>
 							<img className="singerImg" src={item.img1v1Url} />
 							<div className="singerName">{item.name}</div>
 						</div>

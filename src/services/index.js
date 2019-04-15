@@ -51,3 +51,19 @@ export const getHotSinger = () => {
 export const getSongDetail = (id) => {
     return fetchRes(url+`/song/detail?ids=${id}`)
 }
+
+export const getSingerSong = (id) => {
+    return fetchRes(url+`/artists?id=${id}`)
+}
+
+export const getSingerSongList = (id) => {
+    return fetchRes(url+`/artist/album?id=${id}&limit=30`)
+}
+
+export const getSingerIt = (id) => {
+    return fetchRes(url+`/artist/desc?id=${id}`)
+}
+
+export const getAlbum = (id) => {
+    return fetchRes(url+`/album?id=${id}`)
+}

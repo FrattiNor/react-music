@@ -52,7 +52,9 @@ class songList extends Component {
             payload: id
         })
         .then((res)=>{
-            return res.playlist.tracks
+            if(res.code == 200) {
+                return res.playlist.tracks
+            }
         })
     }
 
@@ -81,7 +83,9 @@ class songList extends Component {
                                 <img className="official_img" src={item.coverImgUrl} />
                             </div>
                             <div className="official_introduction">
+                                <div className="official_introduction_name">{item.name}</div>
                                 <div className="official_box">
+                                    
                                     {
                                         item.tracks && item.tracks.map((item, index)=>{
                                             return  <div className="introduction" key={index}>{`${index + 1}. ${item.name} - ${item.ar[0].name}`}</div>

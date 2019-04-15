@@ -9,6 +9,7 @@ import { play, stop, musicMenu, back } from '../../assets/asset'
 import Song from '../song'
 import Singer from '../singer'
 import SongList from '../songList'
+import SingerDetail from '../singerDetail'
 
 @connect(({ index }) => ({
     index
@@ -44,7 +45,7 @@ class theBack extends Component {
 				</div>
 				
 				{
-                    pathname === '/song' ? <Song /> : ( pathname === '/singer' ? <Singer /> : <SongList /> )
+                    pathname === '/song' ? <Song /> : ( pathname === '/singer' ? <Singer /> : ( pathname === '/songList' ? <SongList /> : <SingerDetail /> ) )
                 }
 
 			</div>

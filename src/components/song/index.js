@@ -15,36 +15,22 @@ class song extends Component {
 	}
 
 	componentDidMount() {
-		if(this.props.song == undefined) {
-			const par = JSON.parse(sessionStorage.getItem('songPage'))
-			const { dispatch } = this.props
-			if(par) {
-				const { type, payload } = par
-				dispatch({
-					type,
-					payload
-				})
-				.then((res)=>{
-					if(res.code == 200) {
-						this.setState({
-							list: res.playlist.tracks
-						})
-					}
-				})
-			}
-		}
-		else {
-			this.setState({
-				list: this.props.song
+		const par = JSON.parse(sessionStorage.getItem('songPage'))
+		const { dispatch } = this.props
+		if(par) {
+			const { type, payload } = par
+			dispatch({
+				type,
+				payload
+			})
+			.then((res)=>{
+				if(res.code == 200) {
+					this.setState({
+						list: res.songs || res.playlist.tracks
+					})
+				}
 			})
 		}
-	}
-
-	componentWillReceiveProps(nextProps) {
-		console.log('song', nextProps.song)
-		this.setState({
-			list: nextProps.song
-		})
 	}
 
 	songBack = () => {
@@ -53,12 +39,16 @@ class song extends Component {
 	}
 
 	changeMusic = (item) => {
-		const { dispatch } = this.props;
+        const { dispatch } = this.props;
+        let ar = ''
+        item.ar.forEach((item, index) => {
+            ar += item.name + ' '
+        })
 		let payload = {
 			id: item.id,
 			name: item.name,
 			picUrl: item.al.picUrl,
-			ar: item.ar[0].name,
+			ar: ar,
 			src: `https://music.163.com/song/media/outer/url?id=${item.id}.mp3`
 		}
 		dispatch({
