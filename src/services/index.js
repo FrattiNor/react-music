@@ -36,5 +36,14 @@ export const search = ({keywords, type}) => {
     return fetchRes(url+`/search?keywords=${keywords}&type=${type}`)
 }
 
+export const getSongList = () => {
+    return fetchRes(url+`/top/playlist?limit=30&order=new`)
+}
 
+export const getSongListDetail = (id) => {
+    return fetchRes(url+`/playlist/detail?id=${id}`)
+}
 
+export const getHotSinger = () => {
+    return fetchRes(url+`/top/artists?offset=0&limit=40`)
+}

@@ -1,4 +1,4 @@
-import { getSlider, getSong, getDang, getSingRank, getSongRank, getRankSong, search  } from '../services'
+import { getSlider, getSong, getDang, getSingRank, getSongRank, getRankSong, search, getSongListDetail, getSongList, getHotSinger } from '../services'
 
 export default {
 
@@ -44,6 +44,21 @@ export default {
         // search
         *search( { payload }, { call }) {
             const response = yield call(search, payload)
+            return response
+        },
+
+        *getSongList( _, { call }) {
+            const response = yield call(getSongList)
+            return response
+        },
+
+        *getSongListDetail( { payload }, { call }) {
+            const response = yield call(getSongListDetail, payload)
+            return response
+        },
+
+        *getHotSinger( _, { call }) {
+            const response = yield call(getHotSinger)
             return response
         }
     },

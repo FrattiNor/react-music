@@ -58,7 +58,9 @@ class index extends Component {
 
     deleteText = () => {
         this.setState({
-            keywords: ''
+            keywords: '',
+            song: [],
+            singer: [],
         })
     }
 

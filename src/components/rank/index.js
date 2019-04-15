@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import './index.css';
 import { connect } from 'dva';
+import { routerRedux } from 'dva/router'
 
 @connect(({ index }) => ({
     index
@@ -119,6 +120,18 @@ class index extends Component {
 		
 	}
 
+	pushSong = (id) => {
+		const { dispatch } = this.props;
+		sessionStorage.setItem('songPage', JSON.stringify({ type: 'index/getSongListDetail', payload: id }))
+		dispatch(routerRedux.push('/song'));
+	}
+
+	pushSinger = () => {
+		const { dispatch } = this.props;
+		sessionStorage.setItem('singerPage', JSON.stringify({ type: 'index/getSingRank' }))
+		dispatch(routerRedux.push('/singer'));
+	}
+
 	render() {
 		const { sing_rank, song_rank_1, song_rank_2, official, recommend } = this.state;
 
@@ -126,7 +139,7 @@ class index extends Component {
 			<div className="rank_page">
 
 				<div className="rank_sing">
-					<div className="rank_title">歌手榜></div>
+					<div className="rank_title" onClick={this.pushSinger}>歌手榜></div>
 					{
 						sing_rank.map((item, index)=>{
 							if(index < 5) {
@@ -143,7 +156,7 @@ class index extends Component {
 					<div className="rank_title">官方榜</div>
 					{
 						song_rank_1.map((item, index) => {
-							return <div key={index} className="rank_official_box">
+							return <div key={index} className="rank_official_box" onClick={() => this.pushSong(item.id)}>
 								<div className="official_img_box">
 									<img className="official_img" src={item.coverImgUrl} />
 								</div>
@@ -164,7 +177,7 @@ class index extends Component {
 					<div className="rank_title">推荐榜</div>
 					{
 						song_rank_2.map((item, index) => {
-							return <div key={index} className="rank_recommend_box">
+							return <div key={index} className="rank_recommend_box" onClick={() => this.pushSong(item.id)}>
 								<div className="recommend_img_box">
 									<img className="recommend_img" src={item.coverImgUrl} />
 									<div className="recommend_text">{item.name}</div>

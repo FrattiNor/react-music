@@ -15,11 +15,16 @@ class index extends Component {
 		current: '推荐',
 		bodyMargin: 0,
 		top: '100%',
-		menuTop: '100%'
+		menuTop: '100%',
+		delay: true
 	}
 
 	componentDidMount() {
-
+		setTimeout(()=>{
+			this.setState({
+				delay: false
+			})
+		}, 1000)
 	}
 
 	handleClickBanner = (current) => {
@@ -85,7 +90,7 @@ class index extends Component {
 	// }
 
 	render() {
-		const { bannerList, current, bodyMargin, top, menuTop } = this.state;
+		const { bannerList, current, bodyMargin, top, menuTop, delay } = this.state;
 		const bodyBoxStyle = {
 			transition: '0.5s',
 			marginLeft: -bodyMargin * 100 + '%'
@@ -93,6 +98,12 @@ class index extends Component {
 
 		return (
 			<div className="index">
+				{
+					delay && <div className="cover">
+						<div className="loading">loading...</div>
+					</div>
+				}
+				
 				<div className="header">
 					<div className="header_left">
 						{/* <img className="header_img" src={menu} /> */}

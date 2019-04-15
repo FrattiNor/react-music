@@ -11,7 +11,7 @@
     position: absolute;
     width: 80px;
     height: 80px;
-    top: 0;
+    top: 20px;
     left: 0;
 }
 
@@ -22,7 +22,7 @@
     height: 60px;
     line-height: 60px;
     font-size: 32px;
-    top: 10px;
+    top: 30px;
     left: 80px;
     box-sizing: border-box;
     border: 0;
@@ -32,7 +32,7 @@
 
 .serach_error {
     position: absolute;
-    top: 10px;
+    top: 30px;
     right: 100px;
     width: 60px;
     height: 60px;
@@ -40,7 +40,7 @@
 
 .serach_search {
     position: absolute;
-    top: 10px;
+    top: 30px;
     right: 20px;
     width: 60px;
     height: 60px;
@@ -50,7 +50,7 @@
     width: 750px;
     height: calc( 100% - 80px );
     position: absolute;
-    top: 80px;
+    top: 100px;
     left: 0;
     background-color: #fff;
 }
@@ -151,5 +151,5 @@
     font-size: 32px;
     position: absolute;
     top: 10px;
-    left: 140px;
+    left: 160px;
 }
