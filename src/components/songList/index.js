@@ -9,7 +9,7 @@ import { play, stop, musicMenu, back } from '../../assets/asset'
 @connect(({ index }) => ({
     index
 }))
-class index extends Component {
+class songList extends Component {
 	state = {
 		list: []
 	}
@@ -67,11 +67,11 @@ class index extends Component {
 		const { list } = this.state
 
 		return (
-			<div className="index">
+			<div className="song_index">
 
-				<div className="songTop">
+				{/* <div className="songTop">
 					<img onClick={this.songBack} className="songBack" src={back} />
-				</div>
+				</div> */}
 
 				<div className="songBody">
                 {
@@ -94,19 +94,9 @@ class index extends Component {
                 }
 				</div>
 
-				<div className="footer">
-					<div className="footer_img"></div>
-					<div className="footer_text">The Show</div>
-					<div className="footer_text2">The ShowThe ShowThe ShowThe Show</div>
-
-					{/* <img className="footer_play" src={stop} /> */}
-					<img className="footer_play" src={play} />
-					<img onClick={this.handleMenu} className="footer_menu" src={musicMenu} />
-				</div>
-
 			</div>
 		);
 	}
 }
 
-export default index;
+export default songList;

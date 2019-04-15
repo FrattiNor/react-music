@@ -1,6 +1,6 @@
-.index {
+.song_index {
     width: 750px;
-    height: 100%;
+    height: calc( 100% - 200px );
     font-size: 0;
     position: relative;
     overflow: hidden;
@@ -23,7 +23,7 @@
 
 .songBody {
     width: 750px;
-    height: calc( 100% - 200px );
+    height: 100%;
     position: relative;
     overflow-x: hidden;
     overflow-y: auto;

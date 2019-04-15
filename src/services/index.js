@@ -47,3 +47,7 @@ export const getSongListDetail = (id) => {
 export const getHotSinger = () => {
     return fetchRes(url+`/top/artists?offset=0&limit=40`)
 }
+
+export const getSongDetail = (id) => {
+    return fetchRes(url+`/song/detail?ids=${id}`)
+}

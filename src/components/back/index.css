@@ -1,0 +1,22 @@
+.index {
+    width: 750px;
+    height: 100%;
+    font-size: 0;
+    position: relative;
+    overflow: hidden;
+}
+
+.songTop {
+    width: 750px;
+    height: 100px;
+    position: relative;
+    background-color: #ddd;
+}
+
+.songBack {
+    width: 100px;
+    height: 100px;
+    position: absolute;
+    top: 0;
+    left: 0;
+}

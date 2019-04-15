@@ -2,12 +2,15 @@ import React, { Component } from 'react';
 import './index.css';
 import { connect } from 'dva';
 
-import { back, error, search_black, play } from '../../../assets/asset'
+import Song from '../../song';
+import Singer from '../../singer';
+
+import { back, error, search_black, play, stop } from '../../../assets/asset'
 
 @connect(({ index }) => ({
     index
 }))
-class index extends Component {
+class search extends Component {
 	state = {
         marginLeft: '0',
         current: 'song',
@@ -18,7 +21,7 @@ class index extends Component {
 
 	componentDidMount() {
         
-    }   
+    }
     
     // getBase64 = (imgUrl) => {
 	// 	window.URL = window.URL || window.webkitURL;
@@ -76,11 +79,16 @@ class index extends Component {
         })
         .then((res)=>{
             if(res.code == 200) {
-                this.setState({
-                    song: res.result.songs || []
+                res.result.songs.forEach(async (item, index) => {
+                    let songDetail = await this.getSongDetail(item.id);
+                    res.result.songs[index] = songDetail;
+                    await this.setState({
+                        song: res.result.songs || []
+                    })
                 })
             }
         })
+
         dispatch({
             type: 'index/search',
             payload: {
@@ -97,9 +105,45 @@ class index extends Component {
         })
     }
 
+    getSongDetail = (id) => {
+        const { dispatch } = this.props;
+        return dispatch({
+            type: 'index/getSongDetail',
+            payload: id
+        })
+        .then((res)=>{
+            return res.songs[0]
+        })
+    }
+
+    changeMusic = (item) => {
+		const { dispatch } = this.props;
+		let payload = {
+			id: item.id,
+			name: item.name,
+			picUrl: item.al.picUrl,
+			ar: item.ar[0].name,
+			src: `https://music.163.com/song/media/outer/url?id=${item.id}.mp3`
+		}
+		dispatch({
+			type: 'index/setMusic',
+			payload
+		})
+	}
+
+	musicPlay = (isPause) => {
+		const { dispatch } = this.props;
+		dispatch({
+			type: 'index/setPause',
+			isPause
+		})
+	}
+
 	render() {
         const { marginLeft, current, keywords, song, singer } = this.state
         const { handleSearchBack } = this.props;
+        const { music: { id, isPause } } = this.props.index
+
 		return (
             <div className="search_index">
                 <img className="serach_back" src={back} onClick={handleSearchBack} />
@@ -116,25 +160,30 @@ class index extends Component {
                     <div className="search_content_body">
                         <div className="search_body" style={{ marginLeft }}>
                             <div className="search_content_song search_body_body">
+                                {/* <Song song={song} /> */}
                                 {
                                     song.map((item, index)=>{
                                         return <div className="songList" key={index}>
                                             <div className="songName">{item.name}</div>
-                                            <div className="songArtists">{item.artists.map((item, index) => { return ` ${item.name} ` })}</div>
-                                            <img className="songPlay" src={play} />
+                                            <div className="songArtists">{item.ar && item.ar.map((item, index) => { return ` ${item.name} ` })}</div>
+                                            {
+                                                id === item.id ? ( isPause ? <img className="songPlay" src={play} onClick={() => this.musicPlay(false)} /> : <img className="songPlay" src={stop} onClick={() => this.musicPlay(true)} /> ) : <img className="songPlay" src={play} onClick={() => this.changeMusic(item)} />
+                                            }
+                                            {/* <img className="songPlay" src={play} /> */}
                                         </div>
                                     })
                                 }
                             </div>
                             <div className="search_content_singer search_body_body">
-                                {
+                                <Singer singer={singer} />
+                                {/* {
                                     singer.map((item, index)=>{
                                         return <div className="songList" key={index}>
                                             <img className="singerImg" src={item.img1v1Url} />
                                             <div className="singerName">{item.name}</div>
                                         </div>
                                     })
-                                }
+                                } */}
                             </div>
                         </div>
                     </div>
@@ -144,4 +193,4 @@ class index extends Component {
 	}
 }
 
-export default index;
+export default search;

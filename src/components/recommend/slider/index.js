@@ -28,18 +28,18 @@ class Slider extends Component {
         dispatch({
             type: 'index/getSlider'
         })
-            .then((res) => {
-                // console.log(res)
-                let sliderLength = res.banners.length;
+        .then((res) => {
+            // console.log(res)
+            let sliderLength = res.banners.length;
 
-                this.setState({
-                    distance: -(this.state.index * this.state.baseWidth),
-                    length: sliderLength,
-                    SilderFirst: res.banners[0],
-                    SilderLast: res.banners[sliderLength - 1],
-                    theSilder: res.banners
-                });
-            })
+            this.setState({
+                distance: -(this.state.index * this.state.baseWidth),
+                length: sliderLength,
+                SilderFirst: res.banners[0],
+                SilderLast: res.banners[sliderLength - 1],
+                theSilder: res.banners
+            });
+        })
         this.autoPlay()
     }
     componentWillUnmount() {

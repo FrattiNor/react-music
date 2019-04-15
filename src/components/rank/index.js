@@ -6,7 +6,7 @@ import { routerRedux } from 'dva/router'
 @connect(({ index }) => ({
     index
 }))
-class index extends Component {
+class rank extends Component {
 	state = {
 		// official: ['云音乐飙升榜', '云音乐新歌榜', '网易原创歌曲榜', '云音乐热歌榜'],
 		// recommend: ['江小白YOLO云音乐说唱榜', '以团之名发光榜', '云音乐古典音乐榜', '云音乐电音榜', '抖音排行榜', '云音乐ACG音乐榜'],
@@ -192,4 +192,4 @@ class index extends Component {
 	}
 }
 
-export default index;
+export default rank;

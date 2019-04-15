@@ -6,6 +6,7 @@ import Rank from '../rank'
 import Mine from '../mine'
 
 import Search from './search'
+import Foot from './foot'
 
 import { menu, search, play, stop, musicMenu } from '../../assets/asset'
 
@@ -53,44 +54,8 @@ class index extends Component {
 		})
 	}
 
-	handleMenu = () => {
-		this.setState({
-			menuTop: '0'
-		})
-	}
-
-	handleMenuBack = () => {
-		this.setState({
-			menuTop: '100%'
-		})
-	}
-
-	// getBase64 = (imgUrl) => {
-	// 	window.URL = window.URL || window.webkitURL;
-	// 	var xhr = new XMLHttpRequest();
-	// 	xhr.open('get', imgUrl, true);
-	// 	// 至关重要
-	// 	xhr.responseType = 'blob';
-	// 	xhr.onload = function () {
-	// 		if (this.status == 200) {
-	// 			//得到一个blob对象
-	// 			var blob = this.response;
-	// 			console.log('blob', blob)
-	// 			//  至关重要
-	// 			let oFileReader = new FileReader();
-	// 			oFileReader.onloadend = function (e) {
-	// 				let base64 = e.target.result;
-	// 				console.log('方式一》》》》》》》》》', base64)
-	// 			};
-	// 			oFileReader.readAsDataURL(blob);
-
-	// 		}
-	// 	}
-	// 	xhr.send();
-	// }
-
 	render() {
-		const { bannerList, current, bodyMargin, top, menuTop, delay } = this.state;
+		const { bannerList, current, bodyMargin, top, delay } = this.state;
 		const bodyBoxStyle = {
 			transition: '0.5s',
 			marginLeft: -bodyMargin * 100 + '%'
@@ -104,6 +69,7 @@ class index extends Component {
 					</div>
 				}
 				
+				{/* 头部 */}
 				<div className="header">
 					<div className="header_left">
 						{/* <img className="header_img" src={menu} /> */}
@@ -121,7 +87,8 @@ class index extends Component {
 						}
 					</div>
 				</div>
-
+				
+				{/* 主体 */}
 				<div className="body">
 					<div className="body_box" style={bodyBoxStyle}>
 						{
@@ -139,30 +106,12 @@ class index extends Component {
 						}
 					</div>
 				</div>
-
-				<div className="footer">
-					<div className="footer_img"></div>
-					<div className="footer_text">The Show</div>
-					<div className="footer_text2">The ShowThe ShowThe ShowThe Show</div>
-
-					{/* <img className="footer_play" src={stop} /> */}
-					<img className="footer_play" src={play} />
-					<img onClick={this.handleMenu} className="footer_menu" src={musicMenu} />
-				</div>
-
-
-				{/* <div className="serach" style={{ top }}>
-					<div className="serach_back" onClick={this.handleSearchBack}></div>
-				</div> */}
 				
+				{/* 搜索 */}
 				<div className="serach" style={{ top }}>
 					<Search handleSearchBack={this.handleSearchBack} />
 				</div>
 
-				<div className="musicMenu" style={{ top: menuTop }}>
-					<div className="musicMenu_back" onClick={this.handleMenuBack}></div>
-					<div className="musicMenu_content"></div>
-				</div>
 			</div>
 		);
 	}

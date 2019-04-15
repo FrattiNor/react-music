@@ -7,17 +7,17 @@ const menuGlobal=[
     {
       name:'歌曲',
       path: '/song',
-      component: () => import('../components/song/index'),
+      component: () => import('../components/back/index'),
     }, 
     {
       name:'歌单',
       path: '/songList',
-      component: () => import('../components/songList/index'),
+      component: () => import('../components/back/index'),
     },
     {
       name:'歌手',
       path: '/singer',
-      component: () => import('../components/singer/index'),
+      component: () => import('../components/back/index'),
     },
     // {
     //     id:'ccc',

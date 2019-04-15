@@ -9,27 +9,40 @@ import { play, stop, musicMenu, back } from '../../assets/asset'
 @connect(({ index }) => ({
     index
 }))
-class index extends Component {
+class singer extends Component {
 	state = {
 		list: []
 	}
 
 	componentDidMount() {
-		const par = JSON.parse(sessionStorage.getItem('singerPage'))
-        const { dispatch } = this.props
-		if(par) {
-			const { type } = par
-			dispatch({
-				type,
-			})
-			.then((res)=>{
-				if(res.code == 200) {
-					this.setState({
-						list: res.artists || res.list.artists
-					})
-				}
+		if(this.props.singer == undefined) {
+			const par = JSON.parse(sessionStorage.getItem('singerPage'))
+			const { dispatch } = this.props
+			if(par) {
+				const { type } = par
+				dispatch({
+					type,
+				})
+				.then((res)=>{
+					if(res.code == 200) {
+						this.setState({
+							list: res.artists || res.list.artists
+						})
+					}
+				})
+			}
+		}
+		else {
+			this.setState({
+				list: this.props.singer
 			})
 		}
+	}
+
+	componentWillReceiveProps(nextProps) {
+		this.setState({
+			list: nextProps.singer
+		})
 	}
 
 	songBack = () => {
@@ -43,11 +56,11 @@ class index extends Component {
 		const { list } = this.state
 
 		return (
-			<div className="index">
+			<div className="song_index">
 
-				<div className="songTop">
+				{/* <div className="songTop">
 					<img onClick={this.songBack} className="songBack" src={back} />
-				</div>
+				</div> */}
 
 				<div className="songBody">
 				{
@@ -60,19 +73,9 @@ class index extends Component {
 				}
 				</div>
 
-				<div className="footer">
-					<div className="footer_img"></div>
-					<div className="footer_text">The Show</div>
-					<div className="footer_text2">The ShowThe ShowThe ShowThe Show</div>
-
-					{/* <img className="footer_play" src={stop} /> */}
-					<img className="footer_play" src={play} />
-					<img onClick={this.handleMenu} className="footer_menu" src={musicMenu} />
-				</div>
-
 			</div>
 		);
 	}
 }
 
-export default index;
+export default singer;

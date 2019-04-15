@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 // import './index.css'
 
-class index extends Component {
+class mine extends Component {
 	state = {
 
 	}
@@ -19,4 +19,4 @@ class index extends Component {
 	}
 }
 
-export default index;
+export default mine;
