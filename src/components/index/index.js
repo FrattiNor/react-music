@@ -10,6 +10,11 @@ import Foot from './foot'
 
 import { menu, search, play, stop, musicMenu } from '../../assets/asset'
 
+import error2 from "../../assets/error2.png";
+import love from "../../assets/love.png";
+import love_red from "../../assets/love_red.png";
+
+
 class index extends Component {
 	state = {
 		bannerList: ['推荐', '排行榜', '我的'],
@@ -26,6 +31,8 @@ class index extends Component {
 				delay: false
 			})
 		}, 1000)
+
+		this.getBase64(love_red)
 	}
 
 	handleClickBanner = (current) => {
@@ -53,6 +60,29 @@ class index extends Component {
 			top: '100%'
 		})
 	}
+
+	// getBase64 = (imgUrl) => {
+	// 	window.URL = window.URL || window.webkitURL;
+	// 	var xhr = new XMLHttpRequest();
+	// 	xhr.open('get', imgUrl, true);
+	// 	// 至关重要
+	// 	xhr.responseType = 'blob';
+	// 	xhr.onload = function () {
+	// 		if (this.status == 200) {
+	// 			//得到一个blob对象
+	// 			var blob = this.response;
+	// 			console.log('blob', blob)
+	// 			//  至关重要
+	// 			let oFileReader = new FileReader();
+	// 			oFileReader.onloadend = function (e) {
+	// 				let base64 = e.target.result;
+	// 				console.log('方式一》》》》》》》》》', base64)
+	// 			};
+	// 			oFileReader.readAsDataURL(blob);
+	// 		}
+	// 	}
+	// 	xhr.send();
+  //   }
 
 	render() {
 		const { bannerList, current, bodyMargin, top, delay } = this.state;
@@ -97,8 +127,17 @@ class index extends Component {
 									<div className="body_page_box">
 										<div className="body_page_box_box">
 											{
-												item === '推荐' ? <Recommend /> : (item === '排行榜' ? <Rank /> : <Mine />)
+												item === '推荐' && <Recommend />
 											}
+											{
+												item === '排行榜' && <Rank />
+											}
+											{
+												item === '我的' && <Mine />
+											}
+											{/* {
+												item === '推荐' ? <Recommend /> : (item === '排行榜' ? <Rank /> : <Mine />)
+											} */}
 										</div>
 									</div>
 								</div>

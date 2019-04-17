@@ -132,6 +132,12 @@ class rank extends Component {
 		dispatch(routerRedux.push('/singer'));
 	}
 
+	pushSingerDetail = (item) => {
+		sessionStorage.setItem('singerDetail',JSON.stringify({name: item.name, id: item.id, pic: item.img1v1Url}))
+		const { dispatch } = this.props;
+		dispatch(routerRedux.push('/singerDetail'))
+	}
+
 	render() {
 		const { sing_rank, song_rank_1, song_rank_2, official, recommend } = this.state;
 
@@ -139,11 +145,11 @@ class rank extends Component {
 			<div className="rank_page">
 
 				<div className="rank_sing">
-					<div className="rank_title" onClick={this.pushSinger}>歌手榜></div>
+					<div className="rank_title" onClick={this.pushSinger}>歌手榜</div>
 					{
 						sing_rank.map((item, index)=>{
 							if(index < 5) {
-								return <div key={index} className="rank_sing_box">
+								return <div key={index} className="rank_sing_box" onClick={ () => this.pushSingerDetail(item) }>
 											<img className="rank_sing_img" src={item.img1v1Url} />
 											<div className="rank_sing_name">{item.name}</div>
 										</div>
@@ -160,11 +166,11 @@ class rank extends Component {
 								<div className="official_img_box">
 									<img className="official_img" src={item.coverImgUrl} />
 								</div>
-								<div className="official_introduction">
-									<div className="official_box">
-										<div className="introduction">{`1. ${item.tracks[0].name} - ${item.tracks[0].ar[0].name}`}</div>
-										<div className="introduction">{`2. ${item.tracks[1].name} - ${item.tracks[1].ar[0].name}`}</div>
-										<div className="introduction">{`3. ${item.tracks[2].name} - ${item.tracks[2].ar[0].name}`}</div>
+								<div className="official_introduction2">
+									<div className="official_box2">
+										<div className="introduction2">{`1. ${item.tracks[0].name} - ${item.tracks[0].ar[0].name}`}</div>
+										<div className="introduction2">{`2. ${item.tracks[1].name} - ${item.tracks[1].ar[0].name}`}</div>
+										<div className="introduction2">{`3. ${item.tracks[2].name} - ${item.tracks[2].ar[0].name}`}</div>
 									</div>
 								</div>
 							</div>

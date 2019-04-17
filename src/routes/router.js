@@ -24,6 +24,11 @@ const menuGlobal=[
       path: '/singerDetail',
       component: () => import('../components/back/index'),
     },
+    {
+      name:'歌曲详情',
+      path: '/songDetail',
+      component: () => import('../components/songDetail/index'),
+    },
     // {
     //     id:'ccc',
     //     pid:'0',

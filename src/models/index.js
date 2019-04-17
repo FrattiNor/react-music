@@ -15,7 +15,8 @@ export default {
             sec: '',
             isPause: true,
             ar: 'Beyond'
-        }
+        },
+        update: false
     },
 
     subscriptions: {
@@ -122,6 +123,10 @@ export default {
             music.ar = ar;
             music.isPause = false;
             state.music = music
+            return {...state};
+        },
+        'update'(state) {
+            state.update = !state.update
             return {...state};
         },
     }

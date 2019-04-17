@@ -2,6 +2,9 @@ import React, { Component } from 'react';
 import './index.css';
 
 import { connect } from 'dva';
+import { routerRedux } from 'dva/router';
+
+import Menu from '../../menu'
 
 import { menu, search, play, stop, musicMenu } from '../../../assets/asset'
 
@@ -72,7 +75,6 @@ class foot extends Component {
 
 	play = () => {
 		const { music: { isPause } } = this.props.index
-		console.log('isPause',isPause)
 		let player = document.getElementById('player')
 		if(isPause) {
 			player.pause()
@@ -82,6 +84,11 @@ class foot extends Component {
 				player.play()
 			}, 500)
 		}
+	}
+
+	pushSongDetail = () => {
+		const { dispatch } = this.props;
+		dispatch(routerRedux.push('/songDetail')) 
 	}
 
 	render() {
@@ -95,7 +102,7 @@ class foot extends Component {
 				
 				<div className="footer">
 
-					<img src={picUrl} className="footer_img" />
+					<img src={picUrl} className="footer_img" onClick={this.pushSongDetail} />
 					<div className="footer_text">{name}</div>
 					<div className="footer_text2">{ar}</div>
 
@@ -108,7 +115,9 @@ class foot extends Component {
 
 				<div className="musicMenu" style={{ top: menuTop }}>
 					<div className="musicMenu_back" onClick={this.handleMenuBack}></div>
-					<div className="musicMenu_content"></div>
+					<div className="musicMenu_content">
+						<Menu />
+					</div>
 				</div>
 			</div>
 		);

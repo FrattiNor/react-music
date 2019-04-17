@@ -1,0 +1,176 @@
+.songDetail_index {
+    width: 750px;
+    height: 100%;
+    overflow: hidden;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 11;
+    overflow: hidden;
+}
+
+.cover_bt {
+    position: absolute;
+    width: 750px;
+    height: 100px;
+    bottom: 0;
+    left: 0;
+    background-color: #fff;
+    z-index: 11;
+}
+
+.theFooter {
+    width: 750px;
+    height: 200px;
+    background-color: #fff;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+}
+
+.theFooter_play {
+    width: 100px;
+    height: 100px;
+    position: absolute;
+    top: 50px;
+    left: 325px;
+}
+
+.theFooter_looper {
+    width: 100px;
+    height: 100px;
+    position: absolute;
+    top: 50px;
+    left: 42px;
+}
+
+.theFooter_back {
+    width: 100px;
+    height: 100px;
+    position: absolute;
+    top: 50px;
+    left: 184px;
+}
+
+.theFooter_up {
+    width: 100px;
+    height: 100px;
+    position: absolute;
+    top: 50px;
+    right: 184px;
+}
+
+.theFooter_menu {
+    width: 80px;
+    height: 80px;
+    position: absolute;
+    top: 65px;
+    right: 42px;
+}
+
+.theTop {
+    width: 750px;
+    height: 100px;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+
+.songBack {
+    width: 60px;
+    height: 60px;
+    position: absolute;
+    top: 20px;
+    left: 20px;
+}
+
+.theContent {
+    width: 750px;
+    height: calc( 100% - 300px );
+    background-color: #fff;
+    position: absolute;
+    top: 100px;
+    left: 0;
+}
+
+.theContent_img {
+    width: 300px;
+    height: 300px;
+    border-radius: 50%;
+    position: absolute;
+    top: 350px;
+    left: 225px;
+    border: 1px solid #ddd;
+}
+
+.theContent_cover {
+    width: 500px;
+    height: 500px;
+    position: absolute;
+    background-color: #222;
+    top: 250px;
+    left: 125px;
+    border-radius: 50%;
+}
+
+.theContent_name {
+    width: 750px;
+    height: 100px;
+    text-align: center;
+    line-height: 100px;
+    position: absolute;
+    top: 100px;
+    left: 0;
+    font-size: 56px;
+    font-weight: 800;
+}
+
+.theContent_ar {
+    width: 750px;
+    height: 100px;
+    text-align: center;
+    line-height: 100px;
+    position: absolute;
+    top: 800px;
+    left: 0;
+    font-size: 48px;
+}
+
+.musicMenu {
+    width: 750px;
+    height: 100%;
+    background-color: inherit;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    transition: all 0.5s;
+    z-index: 11;
+}
+
+.musicMenu_back {
+    width: 750px;
+    height: 30%;
+    top: 0;
+    left: 0;
+    background-color: inherit;
+    z-index: 12;
+}
+
+.musicMenu_content {
+    width: 750px;
+    height: 70%;
+    top: 30%;
+    left: 0;
+    background-color: #eee;
+    border-radius: 30px 30px 0 0;
+    z-index: 12;
+}
+
+.index {
+    width: 750px;
+    height: 100%;
+    font-size: 0;
+    position: relative;
+    overflow: hidden;
+}

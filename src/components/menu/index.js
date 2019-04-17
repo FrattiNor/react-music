@@ -4,50 +4,51 @@ import './index.css';
 import { connect } from 'dva';
 import { routerRedux } from 'dva/router';
 
-import { play, stop, musicMenu, back, add } from '../../assets/asset'
+import { play, stop, musicMenu, back, error } from '../../assets/asset'
 
 @connect(({ index }) => ({
     index
 }))
-class song extends Component {
+class menu extends Component {
 	state = {
 		list: []
 	}
 
 	componentDidMount() {
-		const par = JSON.parse(sessionStorage.getItem('songPage'))
-		const { dispatch } = this.props
-		if(par) {
-			const { type, payload } = par
-			dispatch({
-				type,
-				payload
-			})
-			.then((res)=>{
-				if(res.code == 200) {
-					this.setState({
-						list: res.songs || res.playlist.tracks
-					})
-				}
-			})
-		}
-	}
+        this.getList()
+    }
+    
+    componentWillReceiveProps() {
+        this.getList()
+    }
 
-	songBack = () => {
-		const { dispatch } = this.props;
-		dispatch(routerRedux.goBack())
-	}
+    getList = () => {
+        const par = JSON.parse(localStorage.getItem('musicMenu'))
+        this.setState({
+            list: par
+        })
+    }
 
 	changeMusic = (item) => {
         const { dispatch } = this.props;
-        let ar = ''
-        item.ar.forEach((item, index) => {
-            ar += item.name + ' '
-        })
+		let ar = '';
+		let picUrl;
+		if(item.ar) {
+			item.ar.forEach((item, index) => {
+				ar += item.name + ' '
+			})
+			picUrl= item.al.picUrl
+		} else {
+			item.song.artists.forEach((item, index) => {
+				ar += item.name + ' '
+			})
+			picUrl= item.song.album.blurPicUrl
+		}
+		
 		let payload = {
 			id: item.id,
 			name: item.name,
-			picUrl: item.al.picUrl,
+			picUrl: picUrl,
 			ar: ar,
 			src: `https://music.163.com/song/media/outer/url?id=${item.id}.mp3`
 		}
@@ -56,7 +57,16 @@ class song extends Component {
 			payload
 		})
 	}
-
+    
+    delMusic = (item) => {
+        const par = JSON.parse(localStorage.getItem('musicMenu'))
+        let a = par.filter((item2)=>{
+            return item.id != item2.id
+        })
+        localStorage.setItem('musicMenu', JSON.stringify(a))
+        this.getList()
+	}
+	
 	musicPlay = (isPause) => {
 		const { dispatch } = this.props;
 		dispatch({
@@ -65,33 +75,13 @@ class song extends Component {
 		})
 	}
 
-	addMusic = (item) => {
-		const { dispatch } = this.props
-		let a = JSON.parse(localStorage.getItem('musicMenu')) || []
-		let b = true
-		a.forEach((item2)=>{
-			if(item2.id == item.id) {
-				b = false;
-			}
-		})
-
-		if(b) {
-			a.push(item)
-			localStorage.setItem('musicMenu', JSON.stringify(a))
-			dispatch({
-				type: 'index/update'
-			})
-		}
-		
-	}
-
 	render() {
 
 		const { list } = this.state
 		const { music: { id, isPause } } = this.props.index
 
 		return (
-			<div className="song_index">
+			<div className="menu_index">
 
 				{/* <div className="songTop">
 					<img onClick={this.songBack} className="songBack" src={back} />
@@ -103,7 +93,7 @@ class song extends Component {
 							return <div className="songList" key={index}>
 								<div className="songName">{item.name}</div>
 								<div className="songArtists">{item.ar && item.ar.map((item, index) => { return ` ${item.name} ` })}</div>
-								<img onClick={ () => this.addMusic(item) } className="songAdd" src={add} />
+								<img onClick={ () => this.delMusic(item) } className="songDel" src={error} />
 								{
 									id === item.id ? ( isPause ? <img className="songPlay" src={play} onClick={() => this.musicPlay(false)} /> : <img className="songPlay" src={stop} onClick={() => this.musicPlay(true)} /> ) : <img className="songPlay" src={play} onClick={() => this.changeMusic(item)} />
 								}
@@ -117,4 +107,4 @@ class song extends Component {
 	}
 }
 
-export default song;
+export default menu;

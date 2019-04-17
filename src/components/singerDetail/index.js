@@ -19,7 +19,6 @@ class song extends Component {
 
 	componentDidMount() {
         let singerDetail = JSON.parse(sessionStorage.getItem('singerDetail'))
-        console.log(singerDetail)
         this.setState({
             id: singerDetail.id,
             name: singerDetail.name,
@@ -89,7 +88,6 @@ class song extends Component {
             this.setState({
                 it: res.briefDesc
             })
-            console.log('It',res)
         })
     }
 
@@ -186,7 +184,7 @@ class song extends Component {
                             }
                             </div>
                         </div> : <div className="content_box">
-                            <div className="content_box_it">{it}</div>
+                            <div className="songBody"><div className="content_box_it">{it}</div></div>
                         </div> )
                     }
 

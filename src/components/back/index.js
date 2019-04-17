@@ -43,11 +43,18 @@ class theBack extends Component {
 				<div className="songTop">
 					<img onClick={this.songBack} className="songBack" src={back} />
 				</div>
-				
 				{
-                    pathname === '/song' ? <Song /> : ( pathname === '/singer' ? <Singer /> : ( pathname === '/songList' ? <SongList /> : <SingerDetail /> ) )
-                }
-
+					pathname === '/song' && <Song />
+				}
+				{
+					pathname === '/singer' && <Singer />
+				}
+				{
+					pathname === '/songList' && <SongList />
+				}
+				{
+					pathname === '/singerDetail' && <SingerDetail />
+				}
 			</div>
 		);
 	}

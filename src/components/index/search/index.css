@@ -9,10 +9,10 @@
 
 .serach_back {
     position: absolute;
-    width: 80px;
-    height: 80px;
-    top: 20px;
-    left: 0;
+    width: 60px;
+    height: 60px;
+    top: 30px;
+    left: 20px;
 }
 
 .search_text {
@@ -23,7 +23,7 @@
     line-height: 60px;
     font-size: 32px;
     top: 30px;
-    left: 80px;
+    left: 100px;
     box-sizing: border-box;
     border: 0;
     border-bottom: 1px solid #000;
@@ -94,6 +94,12 @@
     overflow-y: auto;
     overflow-x: hidden;
 }
+
+/* .singer_box_box {
+    width: 750px;
+    height: calc( 100% + 200px );
+    overflow: hidden;
+} */
 
 .songList {
     margin-top: 20px;

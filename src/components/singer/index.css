@@ -14,11 +14,11 @@
 }
 
 .songBack {
-    width: 100px;
-    height: 100px;
+    width: 60px;
+    height: 60px;
     position: absolute;
-    top: 0;
-    left: 0;
+    top: 20px;
+    left: 20px;
 }
 
 .songBody {

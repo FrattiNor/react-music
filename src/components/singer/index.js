@@ -25,7 +25,6 @@ class singer extends Component {
 				})
 				.then((res)=>{
 					if(res.code == 200) {
-						console.log(res)
 						this.setState({
 							list: res.artists || res.list.artists
 						})
@@ -79,7 +78,6 @@ class singer extends Component {
 					})
 				}
 				</div>
-
 			</div>
 		);
 	}

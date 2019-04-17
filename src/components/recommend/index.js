@@ -5,6 +5,8 @@ import { routerRedux } from 'dva/router';
 
 import Slider from './slider';
 
+import { play, stop, musicMenu, back, add } from '../../assets/asset'
+
 @connect(({ index }) => ({
     index
 }))
@@ -69,6 +71,14 @@ class recommend extends Component {
 		dispatch(routerRedux.push('/song'));
 	}
 
+	pushSingerDetail = (item) => {
+		sessionStorage.setItem('singerDetail',JSON.stringify({name: item.name, id: item.id, pic: item.img1v1Url}))
+		const { dispatch } = this.props;
+		dispatch(routerRedux.push('/singerDetail'))
+	}
+
+	
+
 	// getBase64 = (imgUrl) => {
 	// 	window.URL = window.URL || window.webkitURL;
 	// 	var xhr = new XMLHttpRequest();
@@ -93,8 +103,48 @@ class recommend extends Component {
 	// 	xhr.send();
 	// }
 
+	changeMusic = (item) => {
+        const { dispatch } = this.props;
+        let ar = ''
+        item.song.artists.forEach((item, index) => {
+            ar += item.name + ' '
+        })
+		let payload = {
+			id: item.id,
+			name: item.name,
+			picUrl: item.song.album.blurPicUrl,
+			ar: ar,
+			src: `https://music.163.com/song/media/outer/url?id=${item.id}.mp3`
+		}
+		dispatch({
+			type: 'index/setMusic',
+			payload
+		})
+	}
+
+	addMusic = (item) => {
+		const { dispatch } = this.props
+		let a = JSON.parse(localStorage.getItem('musicMenu')) || []
+		let b = true
+		a.forEach((item2)=>{
+			if(item2.id == item.id) {
+				b = false;
+			}
+		})
+
+		if(b) {
+			a.push(item)
+			localStorage.setItem('musicMenu', JSON.stringify(a))
+			dispatch({
+				type: 'index/update'
+			})
+		}
+		
+	}
+
 	render() {
 		const { song, dang } = this.state;
+		const { music: { id, isPause } } = this.props.index
 
 		return (
 			<div>
@@ -116,27 +166,39 @@ class recommend extends Component {
 				</div>
 
 				<div className="recommend">
-					<div className="recommend_title">最新音乐></div>
-					{
+					<div className="recommend_title">最新音乐</div>
+					{/* {
 						song.map((item, index)=>{
 							if(index < 9) {
-								return <div className="recommend_box" key={index}>
+								return <div className="recommend_box" key={index} onClick={() => this.changeMusic(item)}>
 									<img className="recommend_img" src={item.song.album.blurPicUrl} />
 									<div className="recommend_text">{item.name}</div>
 								</div>
 							}
 						})
+					} */}
+					{
+						song.map((item, index)=>{
+							return <div className="songList" key={index}>
+								<div className="songName">{item.name}</div>
+								<div className="songArtists">{item.song.artists && item.song.artists.map((item, index) => { return ` ${item.name} ` })}</div>
+								<img src={add} onClick={ () => this.addMusic(item) } className="songAdd" />
+								{
+									id === item.id ? ( isPause ? <img className="songPlay" src={play} onClick={() => this.musicPlay(false)} /> : <img className="songPlay" src={stop} onClick={() => this.musicPlay(true)} /> ) : <img className="songPlay" src={play} onClick={() => this.changeMusic(item)} />
+								}
+							</div>
+						})
 					}
 				</div>
 
-				<div className="recommend">
-					<div className="recommend_title">推荐歌单></div>
+				<div className="recommend2">
+					<div className="recommend_title2">推荐歌单</div>
 					{
 						dang.map((item, index)=>{
 							if(index < 9) {
-								return <div className="recommend_box" key={index} onClick={() => this.pushSong2(item.id)}>
-									<img className="recommend_img" src={item.picUrl} />
-									<div className="recommend_text">{item.name}</div>
+								return <div className="recommend_box2" key={index} onClick={() => this.pushSong2(item.id)}>
+									<img className="recommend_img2" src={item.picUrl} />
+									<div className="recommend_text2">{item.name}</div>
 								</div>
 							}
 						})

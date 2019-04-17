@@ -5,7 +5,7 @@ import { connect } from 'dva';
 import Song from '../../song';
 import Singer from '../../singer';
 
-import { back, error, search_black, play, stop } from '../../../assets/asset'
+import { back, error, search_black, play, stop, add } from '../../../assets/asset'
 
 @connect(({ index }) => ({
     index
@@ -141,6 +141,26 @@ class search extends Component {
 			type: 'index/setPause',
 			isPause
 		})
+    }
+    
+    addMusic = (item) => {
+		const { dispatch } = this.props
+		let a = JSON.parse(localStorage.getItem('musicMenu')) || []
+		let b = true
+		a.forEach((item2)=>{
+			if(item2.id == item.id) {
+				b = false;
+			}
+		})
+
+		if(b) {
+			a.push(item)
+			localStorage.setItem('musicMenu', JSON.stringify(a))
+			dispatch({
+				type: 'index/update'
+			})
+		}
+		
 	}
 
 	render() {
@@ -170,6 +190,7 @@ class search extends Component {
                                         return <div className="songList" key={index}>
                                             <div className="songName">{item.name}</div>
                                             <div className="songArtists">{item.ar && item.ar.map((item, index) => { return ` ${item.name} ` })}</div>
+                                            <img src={add} onClick={ () => this.addMusic(item) } className="songAdd" />
                                             {
                                                 id === item.id ? ( isPause ? <img className="songPlay" src={play} onClick={() => this.musicPlay(false)} /> : <img className="songPlay" src={stop} onClick={() => this.musicPlay(true)} /> ) : <img className="songPlay" src={play} onClick={() => this.changeMusic(item)} />
                                             }
@@ -179,7 +200,10 @@ class search extends Component {
                                 }
                             </div>
                             <div className="search_content_singer search_body_body">
-                                <Singer singer={singer} />
+                                <div className="singer_box_box">
+                                    <Singer singer={singer} />
+                                </div>
+                                
                                 {/* {
                                     singer.map((item, index)=>{
                                         return <div className="songList" key={index}>

@@ -47,7 +47,16 @@
 
 
 .recommend {
-    width: 720px;
+    width: 750px;
+    margin: auto;
+    font-size: 30px;
+    margin-top: 30px;
+    margin-bottom: 30px;
+    overflow: hidden;
+}
+
+.recommend2 {
+    width: 700px;
     margin: auto;
     font-size: 30px;
     margin-top: 30px;
@@ -58,23 +67,29 @@
 .recommend_title {
     margin-bottom: 15px;
     font-weight: 600;
+    margin-left: 30px;
 }
 
-.recommend_box {
-    width: 240px;
-    height: 310px;
+.recommend_title2 {
+    margin-bottom: 15px;
+    font-weight: 600;
+}
+
+.recommend_box2 {
+    width: 230px;
+    height: 320px;
     float: left;
 }
 
-.recommend_img {
-    width: 230px;
-    height: 230px;
+.recommend_img2 {
+    width: 210px;
+    height: 210px;
     border-radius: 10px;
     border: 1px solid #ddd;
     box-sizing: border-box;
 }
 
-.recommend_text {
-    width: 230px;
+.recommend_text2 {
+    width: 210px;
     font-size: 24px;
 }
