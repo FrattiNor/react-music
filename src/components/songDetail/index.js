@@ -14,10 +14,62 @@ class song extends Component {
 	state = {
 		list: [],
 		menuTop: '100%',
+		loveList: [],
+		item: ''
 	}
 
 	componentDidMount() {
-		
+		this.getlove()
+		this.makeItem()
+	}
+
+	componentWillReceiveProps() {
+		this.getlove()
+		this.makeItem()
+	}
+
+	makeItem = () => {
+		const { music: { isPause, picUrl, ar, name, id } } = this.props.index
+		let item = {
+			id,
+			name,
+			ar: [{
+				name: ar
+			}],
+			al: {
+				picUrl: picUrl
+			}
+		}
+		this.setState({
+			item
+		})
+	}
+	
+	getlove = () => {
+		let b = JSON.parse(localStorage.getItem('love')) || [];
+		let c = []
+		b.forEach((item)=>{
+			c.push(item.id)
+		})
+		this.setState({
+			loveList: c,
+		})
+	}
+
+	loveMusic = (item, love) => {
+		const { dispatch } = this.props;
+
+		let b = JSON.parse(localStorage.getItem('love')) || [];
+		let c = b.filter((item2)=>{
+			return item.id != item2.id
+		})
+		if(love) {
+			c.push(item);
+		}
+		localStorage.setItem('love', JSON.stringify(c))
+		dispatch({
+			type: 'index/update'
+		})
 	}
 
 	songBack = () => {
@@ -54,7 +106,7 @@ class song extends Component {
 	}
 
 	changeMusic = (item) => {
-        const { dispatch } = this.props;
+		const { dispatch } = this.props;
 		let ar = '';
 		let picUrl;
 		if(item.ar) {
@@ -76,11 +128,25 @@ class song extends Component {
 			ar: ar,
 			src: `https://music.163.com/song/media/outer/url?id=${item.id}.mp3`
 		}
+
+		let a = JSON.parse(localStorage.getItem('history')) || []
+		let b = a.filter((item2)=>{
+            return item.id != item2.id
+		})
+		b.unshift(item)
+		if(b.length >= 11) {
+			b.shift()
+		}
+		console.log(b)
+		localStorage.setItem('history',JSON.stringify(b))
+		
+
 		dispatch({
 			type: 'index/setMusic',
 			payload
 		})
 	}
+
 
 	musicUp = (id) => {
 		let a = JSON.parse(localStorage.getItem('musicMenu'))
@@ -117,7 +183,7 @@ class song extends Component {
 
 	render() {
 
-		const { menuTop } = this.state
+		const { menuTop, loveList, item } = this.state
 		const { music: { isPause, picUrl, ar, name, id } } = this.props.index
 
 		return (
@@ -139,7 +205,7 @@ class song extends Component {
 					{
 						isPause ? <img className="theFooter_play" src={play} onClick={() =>this.musicPlay(false)} /> : <img className="theFooter_play" src={stop} onClick={() => this.musicPlay(true)} />
 					}
-					<img src={love} className="theFooter_looper" />
+					<img src={loveList.indexOf(id) == -1 ? love : love_red} onClick={loveList.indexOf(id) == -1 ? () => this.loveMusic(item, true) :  () => this.loveMusic(item, false) } className="theFooter_love" />
 					<img src={music_back} className="theFooter_back" onClick={ () => this.musicBack(id) } />
 					<img src={music_up} className="theFooter_up" onClick={ () => this.musicUp(id) } />
 					<img className="theFooter_menu" onClick={this.handleMenu} src={musicMenu} />

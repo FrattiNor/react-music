@@ -10,11 +10,6 @@ import Foot from './foot'
 
 import { menu, search, play, stop, musicMenu } from '../../assets/asset'
 
-import error2 from "../../assets/error2.png";
-import love from "../../assets/love.png";
-import love_red from "../../assets/love_red.png";
-
-
 class index extends Component {
 	state = {
 		bannerList: ['推荐', '排行榜', '我的'],
@@ -31,8 +26,6 @@ class index extends Component {
 				delay: false
 			})
 		}, 1000)
-
-		this.getBase64(love_red)
 	}
 
 	handleClickBanner = (current) => {

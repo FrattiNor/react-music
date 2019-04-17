@@ -104,40 +104,57 @@
 .songList {
     margin-top: 20px;
     width: 750px;
-    height: 120px;
+    height: 100px;
     position: relative;
     border-bottom: 1px solid #ddd;
 }
 
 .songName {
-    font-size: 40px;
+    font-size: 32px;
     color: #000;
     position: absolute;
     top: 0;
     left: 30px;
-    width: 500px;
+    width: 400px;
     height: 60px;
     line-height: 60px;
     overflow: hidden;
 }
 
 .songArtists {
-    font-size: 26px;
+    font-size: 22px;
     color: #666;
     position: absolute;
     top: 60px;
     left: 30px;
-    width: 500px;
-    height: 40px;
-    line-height: 40px;
+    width: 400px;
+    height: 30px;
+    line-height: 30px;
     overflow: hidden;
 }
 
+
 .songPlay {
     position: absolute;
-    width: 60px;
-    height: 60px;
+    width: 50px;
+    height: 50px;
     right: 30px;
+    top: 30px;
+}
+
+.songAdd{
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    right: 110px;
+    top: 30px;
+}
+
+.songLove {
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    right: 190px;
     top: 30px;
 }
 
