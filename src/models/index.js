@@ -1,4 +1,4 @@
-import { getAlbum, getSingerIt, getSingerSongList, getSingerSong, getSongDetail, getSlider, getSong, getDang, getSingRank, getSongRank, getRankSong, search, getSongListDetail, getSongList, getHotSinger } from '../services'
+import { getLyrics, getAlbum, getSingerIt, getSingerSongList, getSingerSong, getSongDetail, getSlider, getSong, getDang, getSingRank, getSongRank, getRankSong, search, getSongListDetail, getSongList, getHotSinger } from '../services'
 
 export default {
 
@@ -97,10 +97,16 @@ export default {
             const response = yield call(getAlbum, payload)
             return response
         },
+
+        *getLyrics( { payload }, { call }) {
+            const response = yield call(getLyrics, payload)
+            return response
+        },
     },
 
     reducers: {
         'setTime'(state, { payload: { time, min, sec } }) {
+            console.log('setTime',time, min, sec)
             let music = state.music;
             music.time = time
             music.min = min

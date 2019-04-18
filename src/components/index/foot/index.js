@@ -16,12 +16,8 @@ class foot extends Component {
 		menuTop: '100%',
 	}
 
-	componentDidMount() {
-		// setInterval(()=>{
-		// 	this.getPlayTime()
-		// }, 500)
-		this.getPlayTime()
-		// this.play()
+	componentDidMount() {	
+		// this.getPlayTime()
 	}
 
 	componentWillReceiveProps() {
@@ -46,11 +42,11 @@ class foot extends Component {
 				min,
 				sec
 			}
-			// dispatch({
-			// 	type: 'index/setTime',
-			// 	payload
-			// })
-		}, 500)
+			dispatch({
+				type: 'index/setTime',
+				payload
+			})
+		}, 10)
 	}
 
 	musicPlay = (isPause) => {
@@ -88,6 +84,9 @@ class foot extends Component {
 
 	pushSongDetail = () => {
 		const { dispatch } = this.props;
+		let a = JSON.parse(sessionStorage.getItem('title')) || []
+		a.push({ name: '歌曲详情', type: '歌曲详情' })
+		sessionStorage.setItem('title', JSON.stringify(a))
 		dispatch(routerRedux.push('/songDetail')) 
 	}
 

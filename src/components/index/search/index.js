@@ -17,15 +17,18 @@ class search extends Component {
         keywords: '',
         song: [],
         singer: [],
-        loveList: []
+        loveList: [],
+        menuList: []
 	}
 
 	componentDidMount() {
         this.getlove()
+        this.getMenu()
     }
 
     componentWillReceiveProps() {
-		this.getlove()
+        this.getlove()
+        this.getMenu()
 	}
 
 	getlove = () => {
@@ -216,10 +219,33 @@ class search extends Component {
 		dispatch({
 			type: 'index/update'
 		})
+    }
+
+    getMenu = () => {
+		let b = JSON.parse(localStorage.getItem('musicMenu')) || []
+		let c = [];
+		b.forEach((item)=>{
+			c.push(item.id)
+		})
+		this.setState({
+			menuList: c,
+		})
+	}
+    
+    delMusic = (item) => {
+		const { dispatch } = this.props;
+        const par = JSON.parse(localStorage.getItem('musicMenu')) || []
+        let a = par.filter((item2)=>{
+            return item.id != item2.id
+        })
+		localStorage.setItem('musicMenu', JSON.stringify(a))
+		dispatch({
+			type: 'index/update'
+		})
 	}
 
 	render() {
-        const { marginLeft, current, keywords, song, singer, loveList } = this.state
+        const { marginLeft, current, keywords, song, singer, loveList, menuList } = this.state
         const { handleSearchBack } = this.props;
         const { music: { id, isPause } } = this.props.index
 
@@ -246,7 +272,7 @@ class search extends Component {
                                             <div className="songName">{item.name}</div>
                                             <div className="songArtists">{item.ar && item.ar.map((item, index) => { return ` ${item.name} ` })}</div>
                                             <img src={loveList.indexOf(item.id) == -1 ? love : love_red} onClick={loveList.indexOf(item.id) == -1 ? () => this.loveMusic(item, true) :  () => this.loveMusic(item, false) } className="songLove" />
-                                            <img src={add} onClick={ () => this.addMusic(item) } className="songAdd" />
+                                            <img onClick={ menuList.indexOf(item.id) == -1 ? () => this.addMusic(item) : () => this.delMusic(item) } className="songAdd" src={menuList.indexOf(item.id) == -1 ? add : error} />
                                             {
                                                 id === item.id ? ( isPause ? <img className="songPlay" src={play} onClick={() => this.musicPlay(false)} /> : <img className="songPlay" src={stop} onClick={() => this.musicPlay(true)} /> ) : <img className="songPlay" src={play} onClick={() => this.changeMusic(item)} />
                                             }

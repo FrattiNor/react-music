@@ -5,7 +5,7 @@ import { routerRedux } from 'dva/router';
 
 import Slider from './slider';
 
-import { play, stop, musicMenu, back, add, love, love_red } from '../../assets/asset'
+import { play, stop, musicMenu, back, add, love, love_red, error } from '../../assets/asset'
 
 @connect(({ index }) => ({
     index
@@ -14,17 +14,20 @@ class recommend extends Component {
 	state = {
 		song: [],
 		dang: [],
-		loveList: []
+		loveList: [],
+		menuList: []
 	}
 
 	componentDidMount() {
 		this.getSong()
 		this.getDang()
 		this.getlove()
+		this.getMenu()
 	}
 
 	componentWillReceiveProps() {
 		this.getlove()
+		this.getMenu()
 	}
 
 	getlove = () => {
@@ -67,32 +70,44 @@ class recommend extends Component {
 	pushSong = () => {
 		const { dispatch } = this.props;
 		sessionStorage.setItem('songPage', JSON.stringify({ type: 'index/getRankSong', payload: 1 }))
+		let a = JSON.parse(sessionStorage.getItem('title')) || []
+		a.push({ name: '热门歌曲', type: '热门歌曲' })
+		sessionStorage.setItem('title', JSON.stringify(a))
 		dispatch(routerRedux.push('/song'));
 	}
 
 	pushSongList = () => {
 		const { dispatch } = this.props;
 		sessionStorage.setItem('songListPage', JSON.stringify({ type: 'index/getSongList' }))
+		let a = JSON.parse(sessionStorage.getItem('title')) || []
+		a.push({ name: '热门歌单', type: '热门歌单' })
+		sessionStorage.setItem('title', JSON.stringify(a))
 		dispatch(routerRedux.push('/songList'));
 	}
 
 	pushSinger = () => {
 		const { dispatch } = this.props;
 		sessionStorage.setItem('singerPage', JSON.stringify({ type: 'index/getHotSinger' }))
+		let a = JSON.parse(sessionStorage.getItem('title')) || []
+		a.push({ name: '热门歌手', type: '热门歌手' })
+		sessionStorage.setItem('title', JSON.stringify(a))
 		dispatch(routerRedux.push('/singer'));
 	}
 
-	pushSong2 = (id) => {
+	pushSong2 = (item) => {
 		const { dispatch } = this.props;
-		sessionStorage.setItem('songPage', JSON.stringify({ type: 'index/getSongListDetail', payload: id }))
+		sessionStorage.setItem('songPage', JSON.stringify({ type: 'index/getSongListDetail', payload: item.id, item }))
+		let a = JSON.parse(sessionStorage.getItem('title')) || []
+		a.push({ name: item.name, type: 'list' })
+		sessionStorage.setItem('title', JSON.stringify(a))
 		dispatch(routerRedux.push('/song'));
 	}
 
-	pushSingerDetail = (item) => {
-		sessionStorage.setItem('singerDetail',JSON.stringify({name: item.name, id: item.id, pic: item.img1v1Url}))
-		const { dispatch } = this.props;
-		dispatch(routerRedux.push('/singerDetail'))
-	}
+	// pushSingerDetail = (item) => {
+	// 	sessionStorage.setItem('singerDetail',JSON.stringify({name: item.name, id: item.id, pic: item.img1v1Url}))
+	// 	const { dispatch } = this.props;
+	// 	dispatch(routerRedux.push('/singerDetail'))
+	// }
 
 	
 
@@ -207,8 +222,31 @@ class recommend extends Component {
 		})
 	}
 
+	getMenu = () => {
+		let b = JSON.parse(localStorage.getItem('musicMenu')) || []
+		let c = [];
+		b.forEach((item)=>{
+			c.push(item.id)
+		})
+		this.setState({
+			menuList: c,
+		})
+	}
+    
+    delMusic = (item) => {
+		const { dispatch } = this.props;
+        const par = JSON.parse(localStorage.getItem('musicMenu')) || []
+        let a = par.filter((item2)=>{
+            return item.id != item2.id
+        })
+		localStorage.setItem('musicMenu', JSON.stringify(a))
+		dispatch({
+			type: 'index/update'
+		})
+	}
+
 	render() {
-		const { song, dang, loveList } = this.state;
+		const { song, dang, loveList, menuList } = this.state;
 		const { music: { id, isPause } } = this.props.index
 
 		return (
@@ -248,7 +286,7 @@ class recommend extends Component {
 								<div className="songName">{item.name}</div>
 								<div className="songArtists">{item.song.artists && item.song.artists.map((item, index) => { return ` ${item.name} ` })}</div>
 								<img src={loveList.indexOf(item.id) == -1 ? love : love_red} onClick={loveList.indexOf(item.id) == -1 ? () => this.loveMusic(item, true) :  () => this.loveMusic(item, false) } className="songLove" />
-								<img src={add} onClick={ () => this.addMusic(item) } className="songAdd" />
+								<img onClick={ menuList.indexOf(item.id) == -1 ? () => this.addMusic(item) : () => this.delMusic(item) } className="songAdd" src={menuList.indexOf(item.id) == -1 ? add : error} />
 								{
 									id === item.id ? ( isPause ? <img className="songPlay" src={play} onClick={() => this.musicPlay(false)} /> : <img className="songPlay" src={stop} onClick={() => this.musicPlay(true)} /> ) : <img className="songPlay" src={play} onClick={() => this.changeMusic(item)} />
 								}
@@ -262,7 +300,7 @@ class recommend extends Component {
 					{
 						dang.map((item, index)=>{
 							if(index < 9) {
-								return <div className="recommend_box2" key={index} onClick={() => this.pushSong2(item.id)}>
+								return <div className="recommend_box2" key={index} onClick={() => this.pushSong2(item)}>
 									<img className="recommend_img2" src={item.picUrl} />
 									<div className="recommend_text2">{item.name}</div>
 								</div>

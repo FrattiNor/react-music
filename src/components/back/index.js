@@ -4,7 +4,7 @@ import './index.css';
 import { connect } from 'dva';
 import { routerRedux } from 'dva/router';
 
-import { play, stop, musicMenu, back } from '../../assets/asset'
+import { play, stop, musicMenu, back, love, love_red } from '../../assets/asset'
 
 import Song from '../song'
 import Singer from '../singer'
@@ -16,32 +16,84 @@ import SingerDetail from '../singerDetail'
 }))
 class theBack extends Component {
 	state = {
-		pathname: ''
+		pathname: '',
+		title: '',
+		type: '',
+		item: {}
 	}
 
 	componentDidMount() {
+		let a = JSON.parse(sessionStorage.getItem('title')) || []
+		a = a[a.length - 1]
         let pathname = this.props.location.pathname;
         this.setState({
-            pathname
-        })
+			pathname,
+			title: a.name,
+			type: a.type
+		})
+		
+		this.getSongListLove()
+
+		let b = JSON.parse(sessionStorage.getItem('songPage')) || []
+		this.setState({
+			item: b.item
+		})
+	}
+
+	componentWillReceiveProps() {
+		this.getSongListLove()
+	}
+
+	getSongListLove = () => {
+		let d = JSON.parse(localStorage.getItem('songListLove')) || [];
+		let e = [];
+		d.forEach((item)=>{
+			e.push(item.id)
+		})
+		this.setState({
+			songListLove: e,
+			songListLove2: d
+		})
 	}
 
 	songBack = () => {
 		const { dispatch } = this.props;
+		let a = JSON.parse(sessionStorage.getItem('title')) || []
+		a.pop()
+		sessionStorage.setItem('title', JSON.stringify(a))
 		dispatch(routerRedux.goBack())
 	}
 
-	componentwillunmount() {
+	loveList = (love) => {
+		let a = JSON.parse(sessionStorage.getItem('songPage')) || []
+		let item = a.item
 
+		const { dispatch } = this.props;
+
+		let b = JSON.parse(localStorage.getItem('songListLove')) || [];
+		let c = b.filter((item2)=>{
+			return item.id != item2.id
+		})
+		if(love) {
+			c.push(item);
+		}
+		localStorage.setItem('songListLove', JSON.stringify(c))
+		dispatch({
+			type: 'index/update'
+		})
 	}
 
 	render() {
-        const { pathname } = this.state
+        const { pathname, title, type, songListLove, songListLove2, item } = this.state
 		return (
 			<div className="index">
 
 				<div className="songTop">
 					<img onClick={this.songBack} className="songBack" src={back} />
+					<div className="backTitle">{ title }</div>
+					{		
+						type === 'list' && <img src={songListLove.indexOf(item.id) == -1 ? love : love_red} onClick={songListLove.indexOf(item.id) == -1 ? () => this.loveList(true) :  () => this.loveList(false) } className="listLove" />
+					}
 				</div>
 				{
 					pathname === '/song' && <Song />

@@ -120,21 +120,31 @@ class rank extends Component {
 		
 	}
 
-	pushSong = (id) => {
+	pushSong = (item) => {
+		console.log(item)
 		const { dispatch } = this.props;
-		sessionStorage.setItem('songPage', JSON.stringify({ type: 'index/getSongListDetail', payload: id }))
+		sessionStorage.setItem('songPage', JSON.stringify({ type: 'index/getSongListDetail', payload: item.id, item }))
+		let a = JSON.parse(sessionStorage.getItem('title')) || []
+		a.push({ name: item.name, type: 'list' })
+		sessionStorage.setItem('title', JSON.stringify(a))
 		dispatch(routerRedux.push('/song'));
 	}
 
 	pushSinger = () => {
 		const { dispatch } = this.props;
 		sessionStorage.setItem('singerPage', JSON.stringify({ type: 'index/getSingRank' }))
+		let a = JSON.parse(sessionStorage.getItem('title')) || []
+		a.push({ name: '歌手排行榜', type: '歌手排行榜' })
+		sessionStorage.setItem('title', JSON.stringify(a))
 		dispatch(routerRedux.push('/singer'));
 	}
 
 	pushSingerDetail = (item) => {
 		sessionStorage.setItem('singerDetail',JSON.stringify({name: item.name, id: item.id, pic: item.img1v1Url}))
 		const { dispatch } = this.props;
+		let a = JSON.parse(sessionStorage.getItem('title')) || []
+		a.push({ name: '歌手详情', type: '歌手详情' })
+		sessionStorage.setItem('title', JSON.stringify(a))
 		dispatch(routerRedux.push('/singerDetail'))
 	}
 
@@ -162,7 +172,7 @@ class rank extends Component {
 					<div className="rank_title">官方榜</div>
 					{
 						song_rank_1.map((item, index) => {
-							return <div key={index} className="rank_official_box" onClick={() => this.pushSong(item.id)}>
+							return <div key={index} className="rank_official_box" onClick={() => this.pushSong(item)}>
 								<div className="official_img_box">
 									<img className="official_img" src={item.coverImgUrl} />
 								</div>
@@ -183,7 +193,7 @@ class rank extends Component {
 					<div className="rank_title">推荐榜</div>
 					{
 						song_rank_2.map((item, index) => {
-							return <div key={index} className="rank_recommend_box" onClick={() => this.pushSong(item.id)}>
+							return <div key={index} className="rank_recommend_box" onClick={() => this.pushSong(item)}>
 								<div className="recommend_img_box">
 									<img className="recommend_img" src={item.coverImgUrl} />
 									<div className="recommend_text">{item.name}</div>

@@ -4,7 +4,7 @@ import './index.css';
 import { connect } from 'dva';
 import { routerRedux } from 'dva/router';
 
-import { play, stop, musicMenu, back, love, love_red, add } from '../../assets/asset'
+import { play, stop, musicMenu, back, love, love_red, add, error } from '../../assets/asset'
 
 @connect(({ index }) => ({
     index
@@ -15,11 +15,12 @@ class song extends Component {
         song: [],
         songList: [],
         it: '',
-        loveList: []
+        loveList: [],
+        menuList: []
 	}
 
 	componentDidMount() {
-        let singerDetail = JSON.parse(sessionStorage.getItem('singerDetail'))
+        let singerDetail = JSON.parse(sessionStorage.getItem('singerDetail')) || []
         this.setState({
             id: singerDetail.id,
             name: singerDetail.name,
@@ -30,10 +31,12 @@ class song extends Component {
         this.getSingerSongList(singerDetail.id)
         this.getSingerIt(singerDetail.id)
         this.getlove()
+        this.getMenu()
     }
 
     componentWillReceiveProps() {
-		this.getlove()
+        this.getlove()
+        this.getMenu()
 	}
 
 	getlove = () => {
@@ -181,9 +184,12 @@ class song extends Component {
         })
     }
 
-    pushSong = (id) => {
+    pushSong = (item) => {
 		const { dispatch } = this.props;
-		sessionStorage.setItem('songPage', JSON.stringify({ type: 'index/getAlbum', payload: id }))
+        sessionStorage.setItem('songPage', JSON.stringify({ type: 'index/getAlbum', payload: item.id, item }))
+        let a = JSON.parse(sessionStorage.getItem('title')) || []
+        a.push({ name: item.name, type: 'list' })
+		sessionStorage.setItem('title', JSON.stringify(a))
 		dispatch(routerRedux.push('/song'));
     }
     
@@ -205,10 +211,33 @@ class song extends Component {
 			})
 		}
 		
+    }
+    
+    getMenu = () => {
+		let b = JSON.parse(localStorage.getItem('musicMenu')) || []
+		let c = [];
+		b.forEach((item)=>{
+			c.push(item.id)
+		})
+		this.setState({
+			menuList: c,
+		})
+	}
+    
+    delMusic = (item) => {
+		const { dispatch } = this.props;
+        const par = JSON.parse(localStorage.getItem('musicMenu')) || []
+        let a = par.filter((item2)=>{
+            return item.id != item2.id
+        })
+		localStorage.setItem('musicMenu', JSON.stringify(a))
+		dispatch({
+			type: 'index/update'
+		})
 	}
 
 	render() {
-        const { pic, name, current, song, songList, it, loveList } = this.state
+        const { pic, name, current, song, songList, it, loveList, menuList } = this.state
         const { music: { id, isPause } } = this.props.index
 		return (
 			<div className="song_index">
@@ -232,7 +261,7 @@ class song extends Component {
                                             <div className="songName">{item.name}</div>
                                             <div className="songArtists">{item.ar && item.ar.map((item, index) => { return ` ${item.name} ` })}</div>
                                             <img src={loveList.indexOf(item.id) == -1 ? love : love_red} onClick={loveList.indexOf(item.id) == -1 ? () => this.loveMusic(item, true) :  () => this.loveMusic(item, false) } className="songLove" />
-                                            <img onClick={ () => this.addMusic(item) } className="songAdd" src={add} />
+                                            <img onClick={ menuList.indexOf(item.id) == -1 ? () => this.addMusic(item) : () => this.delMusic(item) } className="songAdd" src={menuList.indexOf(item.id) == -1 ? add : error} />
                                             {
                                                 id === item.id ? ( isPause ? <img className="songPlay" src={play} onClick={() => this.musicPlay(false)} /> : <img className="songPlay" src={stop} onClick={() => this.musicPlay(true)} /> ) : <img className="songPlay" src={play} onClick={() => this.changeMusic(item)} />
                                             }
@@ -244,7 +273,7 @@ class song extends Component {
                             <div className="songBody">
                             {
                                 songList.map((item, index) => {
-                                    return <div key={index} className="rank_official_box" onClick={() => this.pushSong(item.id)}>
+                                    return <div key={index} className="rank_official_box" onClick={() => this.pushSong(item)}>
                                         <div className="official_img_box">
                                             <img className="official_img" src={item.picUrl} />
                                         </div>

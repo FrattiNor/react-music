@@ -76,6 +76,7 @@
     color: #000;
     line-height: 65px;
     font-weight: 800;
+    overflow: hidden;
 }
 
 .introduction {

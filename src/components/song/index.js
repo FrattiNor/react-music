@@ -4,7 +4,7 @@ import './index.css';
 import { connect } from 'dva';
 import { routerRedux } from 'dva/router';
 
-import { play, stop, musicMenu, back, add, love, love_red } from '../../assets/asset'
+import { play, stop, musicMenu, back, add, love, love_red, error } from '../../assets/asset'
 
 @connect(({ index }) => ({
     index
@@ -12,18 +12,20 @@ import { play, stop, musicMenu, back, add, love, love_red } from '../../assets/a
 class song extends Component {
 	state = {
 		list: [],
-		loveList: []
+		loveList: [],
+		menuList: []
 	}
 
 	componentDidMount() {
 		this.getlove()
+		this.getMenu()
 
-		const par = JSON.parse(sessionStorage.getItem('songPage'))
+		const par = JSON.parse(sessionStorage.getItem('songPage')) || []
 		const { dispatch } = this.props
 		if(par) {
 			if(par.payload == 'love') {
 				this.setState({
-					list: JSON.parse(localStorage.getItem('love'))
+					list: JSON.parse(localStorage.getItem('love')) || []
 				})
 			} else {
 				const { type, payload } = par
@@ -44,6 +46,7 @@ class song extends Component {
 
 	componentWillReceiveProps() {
 		this.getlove()
+		this.getMenu()
 	}
 
 	getlove = () => {
@@ -54,6 +57,17 @@ class song extends Component {
 		})
 		this.setState({
 			loveList: c,
+		})
+	}
+
+	getMenu = () => {
+		let b = JSON.parse(localStorage.getItem('musicMenu')) || []
+		let c = [];
+		b.forEach((item)=>{
+			c.push(item.id)
+		})
+		this.setState({
+			menuList: c,
 		})
 	}
 
@@ -149,9 +163,21 @@ class song extends Component {
 		})
 	}
 
+	delMusic = (item) => {
+		const { dispatch } = this.props;
+        const par = JSON.parse(localStorage.getItem('musicMenu')) || []
+        let a = par.filter((item2)=>{
+            return item.id != item2.id
+        })
+		localStorage.setItem('musicMenu', JSON.stringify(a))
+		dispatch({
+			type: 'index/update'
+		})
+	}
+
 	render() {
 
-		const { list, loveList } = this.state
+		const { list, loveList, menuList } = this.state
 		const { music: { id, isPause } } = this.props.index
 
 		return (
@@ -168,7 +194,7 @@ class song extends Component {
 								<div className="songName">{item.name}</div>
 								<div className="songArtists">{item.ar && item.ar.map((item, index) => { return ` ${item.name} ` })}</div>
 								<img src={loveList.indexOf(item.id) == -1 ? love : love_red} onClick={loveList.indexOf(item.id) == -1 ? () => this.loveMusic(item, true) :  () => this.loveMusic(item, false) } className="songLove" />
-								<img onClick={ () => this.addMusic(item) } className="songAdd" src={add} />
+								<img onClick={ menuList.indexOf(item.id) == -1 ? () => this.addMusic(item) : () => this.delMusic(item) } className="songAdd" src={menuList.indexOf(item.id) == -1 ? add : error} />
 								{
 									id === item.id ? ( isPause ? <img className="songPlay" src={play} onClick={() => this.musicPlay(false)} /> : <img className="songPlay" src={stop} onClick={() => this.musicPlay(true)} /> ) : <img className="songPlay" src={play} onClick={() => this.changeMusic(item)} />
 								}

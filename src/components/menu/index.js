@@ -53,7 +53,7 @@ class menu extends Component {
 	}
 
     getList = () => {
-        const par = JSON.parse(localStorage.getItem('musicMenu'))
+        const par = JSON.parse(localStorage.getItem('musicMenu')) || []
         this.setState({
             list: par
         })
@@ -103,12 +103,15 @@ class menu extends Component {
 
     
     delMusic = (item) => {
-        const par = JSON.parse(localStorage.getItem('musicMenu'))
+		const { dispatch } = this.props;
+        const par = JSON.parse(localStorage.getItem('musicMenu')) || []
         let a = par.filter((item2)=>{
             return item.id != item2.id
         })
-        localStorage.setItem('musicMenu', JSON.stringify(a))
-        this.getList()
+		localStorage.setItem('musicMenu', JSON.stringify(a))
+		dispatch({
+			type: 'index/update'
+		})
 	}
 	
 	musicPlay = (isPause) => {

@@ -15,7 +15,7 @@ class songList extends Component {
 	}
 
 	componentDidMount() {
-		const par = JSON.parse(sessionStorage.getItem('songListPage'))
+		const par = JSON.parse(sessionStorage.getItem('songListPage')) || []
         const { dispatch } = this.props
 		if(par) {
 			const { type } = par
@@ -58,9 +58,12 @@ class songList extends Component {
         })
     }
 
-    pushSong = (id) => {
+    pushSong = (item) => {
 		const { dispatch } = this.props;
-		sessionStorage.setItem('songPage', JSON.stringify({ type: 'index/getSongListDetail', payload: id }))
+        sessionStorage.setItem('songPage', JSON.stringify({ type: 'index/getSongListDetail', payload: item.id, item }))
+        let a = JSON.parse(sessionStorage.getItem('title')) || []
+        a.push({ name: item.name, type: 'list' })
+		sessionStorage.setItem('title', JSON.stringify(a))
 		dispatch(routerRedux.push('/song'));
 	}
 
@@ -78,7 +81,7 @@ class songList extends Component {
 				<div className="songBody">
                 {
                     list.map((item, index) => {
-                        return <div key={index} className="rank_official_box" onClick={() => this.pushSong(item.id)}>
+                        return <div key={index} className="rank_official_box" onClick={() => this.pushSong(item)}>
                             <div className="official_img_box">
                                 <img className="official_img" src={item.coverImgUrl} />
                             </div>

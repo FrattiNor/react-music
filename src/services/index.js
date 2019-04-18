@@ -67,3 +67,7 @@ export const getSingerIt = (id) => {
 export const getAlbum = (id) => {
     return fetchRes(url+`/album?id=${id}`)
 }
+
+export const getLyrics = (id) => {
+    return fetchRes(url+`/lyric?id=${id}`)
+}

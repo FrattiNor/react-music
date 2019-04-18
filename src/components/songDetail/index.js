@@ -15,17 +15,34 @@ class song extends Component {
 		list: [],
 		menuTop: '100%',
 		loveList: [],
-		item: ''
+		item: '',
+		allTime: 0,
+		curTime: 0,
+		ALLTime: { min: '00', sec: '00' },
+		CurTime: { min: '00', sec: '00' },
+		deg: 0,
+		turnBack: true,
+		lyrics: [],
+		top: '40%'
 	}
 
 	componentDidMount() {
 		this.getlove()
 		this.makeItem()
+
+		this.getPlayTime()
+
+		setTimeout(this.getTime, 500)
+
+		this.getLyrics()
 	}
 
 	componentWillReceiveProps() {
 		this.getlove()
 		this.makeItem()
+
+		this.getPlayTime()
+		this.getLyrics()
 	}
 
 	makeItem = () => {
@@ -149,7 +166,7 @@ class song extends Component {
 
 
 	musicUp = (id) => {
-		let a = JSON.parse(localStorage.getItem('musicMenu'))
+		let a = JSON.parse(localStorage.getItem('musicMenu')) || []
 		let theIndex = -1
 		a.forEach((item, index) => {
 			if(id == item.id) {
@@ -160,11 +177,18 @@ class song extends Component {
 			theIndex = -1
 		}
 		let next = a[theIndex + 1]
-		this.changeMusic(next)
+		if(next) {
+			this.changeMusic(next)
+		}
+		
+		clearInterval(this.interval)
+		// this.setState({
+		// 	deg: 0
+		// })
 	}
 
 	musicBack = (id) => {
-		let a = JSON.parse(localStorage.getItem('musicMenu'))
+		let a = JSON.parse(localStorage.getItem('musicMenu')) || []
 		let theIndex = -1
 		a.forEach((item, index) => {
 			if(id == item.id) {
@@ -178,30 +202,233 @@ class song extends Component {
 			theIndex = 1
 		}
 		let next = a[theIndex - 1]
-		this.changeMusic(next)
+		if(next) {
+			this.changeMusic(next)
+		}
+		
+		clearInterval(this.interval)
+		// this.setState({
+		// 	deg: 0
+		// })
+	}
+
+	getPlayTime = () => {
+		const { music: { isPause } } = this.props.index
+		console.log(isPause)
+		if(isPause) {
+			clearInterval(this.interval)
+		} else {
+			this.interval = setInterval(()=>{
+				this.getTime()
+				this.degChange()
+			}, 500)
+		}
+	}
+
+	getTime = () => {
+		const { lyrics } = this.state
+		let player = document.getElementById('player')
+		let curTime = Math.floor(player.currentTime)
+		let allTime = Math.floor(player.duration)
+		
+		let CurTime = this.getMinAndSec(curTime)
+		let ALLTime = this.getMinAndSec(allTime)
+
+		console.log(lyrics)
+		lyrics.forEach((item, index)=>{
+			if(index + 1 == lyrics.length) {
+				if(curTime >= item.time) {
+					this.setState({
+						top: `${(40 - 10*index)}%`
+					})
+				}
+			} else {
+				if(curTime >= item.time && curTime < lyrics[index + 1].time) {
+					this.setState({
+						top: `${(40 - 10*index)}%`
+					})
+				}
+			}
+			
+			
+		})
+		this.setState({
+			allTime,
+			curTime,
+			CurTime,
+			ALLTime
+		})
+	}
+
+	degChange = () => {
+		const { deg } = this.state;
+		let deg2 = deg + 10;
+		this.setState({
+			deg: deg2
+		})
+	}
+
+	getMinAndSec = (time) => {
+		let sec = time % 60;
+		let min = (time - sec) / 60;
+		if(sec - (sec % 10) === 0) {
+			sec = '0' + sec
+		}
+		if(min - (min % 10) === 0) {
+			min = '0' + min
+		}
+		return { min, sec }
+		// let payload = {
+		// 	time: `${min}:${sec}`,
+		// 	min,
+		// 	sec
+		// }
+	}
+
+	setTime = (time) => {
+		let player = document.getElementById('player')
+		player.currentTime = time
+		this.getTime()
+		// player.play()
+	}
+
+	touchStart(e) {
+       	const { allTime } = this.state
+		let _nextX = e.touches[0].pageX
+		       
+		let curTime = Math.floor(_nextX / document.documentElement.clientWidth * allTime)
+
+		let CurTime = this.getMinAndSec(curTime)
+
+		this.setTime(curTime)
+
+        this.setState({
+            curTime,
+            CurTime
+        })
+    }
+    touchMove(e) {
+		// 获得移动的位置
+		const { allTime } = this.state
+		let _nextX = e.touches[0].pageX
+		       
+		let curTime = Math.floor(_nextX / document.documentElement.clientWidth * allTime)
+
+		let CurTime = this.getMinAndSec(curTime)
+
+        this.setState({
+            curTime,
+            CurTime
+        })
+    }
+    touchEnd() {
+		const { curTime } = this.state;
+		this.setTime(curTime)
+	}
+
+	// clickJDT(e) {
+	// 	const { allTime } = this.state
+	// 	let _nextX = e.touches[0].pageX
+		       
+	// 	let curTime = Math.floor(_nextX / document.documentElement.clientWidth * allTime)
+
+	// 	let CurTime = this.getMinAndSec(curTime)
+
+	// 	this.setTime(curTime)
+
+    //     this.setState({
+    //         curTime,
+    //         CurTime
+    //     })
+	// }
+
+	handleTurn = () => {
+		const { turnBack } = this.state;
+		this.setState({
+			turnBack: !turnBack
+		})
+	}
+
+	getLyrics = () => {
+		const { dispatch, index: { music } } = this.props;
+		let lyrics = ''
+		dispatch({
+			type: 'index/getLyrics',
+			payload: music.id
+		})
+		.then((res)=>{
+			if(res.code == 200) {
+				// console.log('ly', this.handleLy(res.lrc.lyric))
+				this.setState({
+					lyrics: this.handleLy(res.lrc.lyric)
+				})
+				// this.setState({
+				// 	lyrics: res.lrc.lyric
+				// })
+			}
+		})
+	}
+
+	handleLy = (lyric) => {
+		let LyricList = lyric.split("\n")
+		let newLyric = []
+		LyricList.forEach((item, index)=>{
+			
+			let time = (item.slice(1,3)*60 - 0) + (item.slice(4,6) - 0)
+			let ly = ''
+			if(item.length > 11) {
+				ly = item.slice(12 - item.length)
+			}
+			if(index < LyricList.length - 1) {
+				newLyric.push({ time, ly })
+			}
+		})
+		return newLyric
 	}
 
 	render() {
 
-		const { menuTop, loveList, item } = this.state
+		const { menuTop, loveList, item, curTime, CurTime, allTime, ALLTime, deg, turnBack, lyrics, top } = this.state
 		const { music: { isPause, picUrl, ar, name, id } } = this.props.index
 
+		const JDT_Style = { width: curTime / allTime * 100 + '%' }
+		const IMG_Style = { transform: `rotate(${deg}deg)` }
+		const lyric_Style = { top: top }
+ 
 		return (
 			<div className="songDetail_index">
-				{/* <div className="cover_bt" onClick={this.handleMenu}></div> */}
-
 				<div className="theTop">
 					<img onClick={this.songBack} className="songBack" src={back} />
 				</div>
-				
-				<div className="theContent">
-					<div className="theContent_cover"></div>
-					<img src={picUrl} className="theContent_img" />
-					<div className="theContent_name">{name}</div>
-					<div className="theContent_ar">{ar}</div>
-				</div>
+
+				{
+					turnBack ? <div className="theContent" onClick={this.handleTurn}>
+						<div className="theContent_cover"></div>
+						<img src={picUrl} className="theContent_img" style={{...IMG_Style}} />
+						<div className="theContent_name">{name}</div>
+						<div className="theContent_ar">{ar}</div>
+					</div> : 
+					<div className="theContent" onClick={this.handleTurn}>
+						<div className="lyrics_cover1"></div>
+						<div className="lyrics_cover2"></div>
+
+						<div className="lyrics_box" style={{ ...lyric_Style }}>
+						{
+							lyrics.map((item, index) => {
+								return <div key={index} className="theContent_lyrics">{item.ly}</div>
+							})
+						}
+						</div>
+					</div>
+				}
 				
 				<div className="theFooter">
+					<div className="JinDuTiao_time">{ `${CurTime.min}:${CurTime.sec} / ${ALLTime.min}:${ALLTime.sec}` }</div>
+
+					<div className="JinDuTiao_cover" />
+					<div className="JinDuTiao" style={{...JDT_Style}} />
+					<div className="JinDuTiao_touch" onTouchEnd={e => this.touchEnd(e)} onTouchMove={e => this.touchMove(e)}  onTouchStart={e => this.touchStart(e)} />
+
 					{
 						isPause ? <img className="theFooter_play" src={play} onClick={() =>this.musicPlay(false)} /> : <img className="theFooter_play" src={stop} onClick={() => this.musicPlay(true)} />
 					}

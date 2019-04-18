@@ -4,7 +4,7 @@ import './index.css';
 import { connect } from 'dva';
 import { routerRedux } from 'dva/router';
 
-import { play, stop, musicMenu, back, add, love, love_red } from '../../assets/asset'
+import { play, stop, musicMenu, back, add, love, love_red, error } from '../../assets/asset'
 
 @connect(({ index }) => ({
     index
@@ -13,28 +13,41 @@ class mine extends Component {
 	state = {
 		history: [],
 		loveList: [],
-		loveList2: []
+		loveList2: [],
+		songListLove2: [],
+		songListLove: [],
+		menuList: []
 	}
 
 	componentDidMount() {
 		this.getloveAndHistory()
+		this.getMenu()
 	}
 
 	componentWillReceiveProps() {
 		this.getloveAndHistory()
+		this.getMenu()
 	}
 
 	getloveAndHistory = () => {
 		let a = JSON.parse(localStorage.getItem('history')) || [];
 		let b = JSON.parse(localStorage.getItem('love')) || [];
+		let d = JSON.parse(localStorage.getItem('songListLove')) || [];
 		let c = []
+		let e = []
 		b.forEach((item)=>{
 			c.push(item.id)
 		})
+		d.forEach((item)=>{
+			e.push(item.id)
+		})
+		console.log(d)
 		this.setState({
 			history: a,
 			loveList: c,
-			loveList2: b.slice(0,10)
+			loveList2: b.slice(0,10),
+			songListLove: e,
+			songListLove2: d
 		})
 	}
 
@@ -126,12 +139,51 @@ class mine extends Component {
 
 	pushSong = () => {
 		sessionStorage.setItem('songPage', JSON.stringify({ payload: 'love' }))
+		let a = JSON.parse(sessionStorage.getItem('title')) || []
+		a.push({ name: '歌曲收藏', type: '歌曲收藏' })
+		sessionStorage.setItem('title', JSON.stringify(a))
 		const { dispatch } = this.props;
 		dispatch(routerRedux.push('/song'))
 	}
 
+	pushSong2 = (item) => {
+		const { dispatch } = this.props;
+		if(item.type == '专辑') {
+			sessionStorage.setItem('songPage', JSON.stringify({ type: 'index/getAlbum', payload: item.id, item }))
+		} else {
+			sessionStorage.setItem('songPage', JSON.stringify({ type: 'index/getSongListDetail', payload: item.id, item }))
+		}
+		let a = JSON.parse(sessionStorage.getItem('title')) || []
+		a.push({ name: item.name, type: 'list' })
+		sessionStorage.setItem('title', JSON.stringify(a))
+		dispatch(routerRedux.push('/song'));
+	}
+
+	getMenu = () => {
+		let b = JSON.parse(localStorage.getItem('musicMenu')) || []
+		let c = [];
+		b.forEach((item)=>{
+			c.push(item.id)
+		})
+		this.setState({
+			menuList: c,
+		})
+	}
+    
+    delMusic = (item) => {
+		const { dispatch } = this.props;
+        const par = JSON.parse(localStorage.getItem('musicMenu')) || []
+        let a = par.filter((item2)=>{
+            return item.id != item2.id
+        })
+		localStorage.setItem('musicMenu', JSON.stringify(a))
+		dispatch({
+			type: 'index/update'
+		})
+	}
+
 	render() {
-		const { history, loveList, loveList2 } = this.state
+		const { history, loveList, loveList2, songListLove, songListLove2, menuList } = this.state
 		const { music: { id, isPause } } = this.props.index
 
 		return (
@@ -147,7 +199,7 @@ class mine extends Component {
 									{item.ar && item.ar.map((item, index) => { return ` ${item.name} ` })}
 								</div>
 								<img src={loveList.indexOf(item.id) == -1 ? love : love_red} onClick={loveList.indexOf(item.id) == -1 ? () => this.loveMusic(item, true) :  () => this.loveMusic(item, false) } className="songLove" />
-								<img src={add} onClick={ () => this.addMusic(item) } className="songAdd" />
+								<img onClick={ menuList.indexOf(item.id) == -1 ? () => this.addMusic(item) : () => this.delMusic(item) } className="songAdd" src={menuList.indexOf(item.id) == -1 ? add : error} />
 								{
 									id === item.id ? ( isPause ? <img className="songPlay" src={play} onClick={() => this.musicPlay(false)} /> : <img className="songPlay" src={stop} onClick={() => this.musicPlay(true)} /> ) : <img className="songPlay" src={play} onClick={() => this.changeMusic(item)} />
 								}
@@ -167,7 +219,7 @@ class mine extends Component {
 									{item.ar && item.ar.map((item, index) => { return ` ${item.name} ` })}
 								</div>
 								<img src={loveList.indexOf(item.id) == -1 ? love : love_red} onClick={loveList.indexOf(item.id) == -1 ? () => this.loveMusic(item, true) :  () => this.loveMusic(item, false) } className="songLove" />
-								<img src={add} onClick={ () => this.addMusic(item) } className="songAdd" />
+								<img onClick={ menuList.indexOf(item.id) == -1 ? () => this.addMusic(item) : () => this.delMusic(item) } className="songAdd" src={menuList.indexOf(item.id) == -1 ? add : error} />
 								{
 									id === item.id ? ( isPause ? <img className="songPlay" src={play} onClick={() => this.musicPlay(false)} /> : <img className="songPlay" src={stop} onClick={() => this.musicPlay(true)} /> ) : <img className="songPlay" src={play} onClick={() => this.changeMusic(item)} />
 								}
@@ -176,8 +228,16 @@ class mine extends Component {
 					}
 				</div>
 
-				<div className="recommend">
-					<div className="recommend_title">歌单收藏</div>
+				<div className="recommend2">
+					<div className="recommend_title2">歌单&专辑收藏</div>
+					{
+						songListLove2.map((item, index)=>{
+							return <div className="recommend_box2" key={index} onClick={() => this.pushSong2(item)}>
+								<img className="recommend_img2" src={item.picUrl || item.coverImgUrl} />
+								<div className="recommend_text2">{item.name}</div>
+							</div>
+						})
+					}
 				</div>
 
 			</div>

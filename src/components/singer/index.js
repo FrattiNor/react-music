@@ -16,7 +16,7 @@ class singer extends Component {
 
 	componentDidMount() {
 		if(this.props.singer == undefined) {
-			const par = JSON.parse(sessionStorage.getItem('singerPage'))
+			const par = JSON.parse(sessionStorage.getItem('singerPage')) || []
 			const { dispatch } = this.props
 			if(par) {
 				const { type } = par
@@ -53,6 +53,9 @@ class singer extends Component {
 	pushSingerDetail = (item) => {
 		sessionStorage.setItem('singerDetail',JSON.stringify({name: item.name, id: item.id, pic: item.img1v1Url}))
 		const { dispatch } = this.props;
+		let a = JSON.parse(sessionStorage.getItem('title')) || []
+		a.push({ name: '歌手详情', type: '歌手详情' })
+		sessionStorage.setItem('title', JSON.stringify(a))
 		dispatch(routerRedux.push('/singerDetail'))
 	}
     

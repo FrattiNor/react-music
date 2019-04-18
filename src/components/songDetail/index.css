@@ -32,7 +32,7 @@
     width: 100px;
     height: 100px;
     position: absolute;
-    top: 50px;
+    top: 60px;
     left: 325px;
 }
 
@@ -40,7 +40,7 @@
     width: 100px;
     height: 100px;
     position: absolute;
-    top: 50px;
+    top: 60px;
     left: 42px;
 }
 
@@ -48,7 +48,7 @@
     width: 100px;
     height: 100px;
     position: absolute;
-    top: 50px;
+    top: 60px;
     left: 184px;
 }
 
@@ -56,7 +56,7 @@
     width: 100px;
     height: 100px;
     position: absolute;
-    top: 50px;
+    top: 60px;
     right: 184px;
 }
 
@@ -64,7 +64,7 @@
     width: 80px;
     height: 80px;
     position: absolute;
-    top: 65px;
+    top: 73px;
     right: 42px;
 }
 
@@ -92,6 +92,7 @@
     position: absolute;
     top: 100px;
     left: 0;
+    overflow: hidden;
 }
 
 .theContent_img {
@@ -102,6 +103,7 @@
     top: 350px;
     left: 225px;
     border: 1px solid #ddd;
+    transition: all 0.5s linear;
 }
 
 .theContent_cover {
@@ -173,4 +175,79 @@
     font-size: 0;
     position: relative;
     overflow: hidden;
+}
+
+
+.JinDuTiao {
+    transition: all 0s;
+    height: 3px;
+    position: absolute;
+    background-color: #D43B33;
+    top: 0;
+    left: 0;
+}
+
+.JinDuTiao_cover {
+    height: 3px;
+    width: 750px;
+    position: absolute;
+    background-color: #eee;
+    top: 0;
+    left: 0;
+}
+
+.JinDuTiao_time {
+    width: 750px;
+    height: 50px;
+    font-size: 32px;
+    text-align: center;
+    position: absolute;
+    top: 0;
+    left: 0;
+    line-height: 50px;
+}
+
+.JinDuTiao_touch {
+    height: 40px;
+    width: 750px;
+    position: absolute;
+    /* background-color: rgba(0,0,0,0.6); */
+    top: -20px;
+    left: 0;
+}
+
+.theContent_lyrics {
+    font-size: 32px;
+    width: 750px;
+    height: 10%;
+    line-height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.lyrics_box {
+    width: 750px;
+    height: 100%;
+    position: absolute;
+    left: 0;
+}
+
+.lyrics_cover1 {
+    width: 750px;
+    height: 40%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: rgba(0,0,0,0.5);
+}
+
+.lyrics_cover2 {
+    width: 750px;
+    height: 50%;
+    position: absolute;
+    top: 50%;
+    left: 0;
+    background-color: rgba(0,0,0,0.5);
 }

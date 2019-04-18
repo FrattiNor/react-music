@@ -56,12 +56,13 @@
 }
 
 .recommend2 {
-    width: 700px;
+    width: 720px;
     margin: auto;
     font-size: 30px;
     margin-top: 30px;
     margin-bottom: 30px;
     overflow: hidden;
+    
 }
 
 .recommend_title {
@@ -75,12 +76,14 @@
     font-size: 36px;
     margin-bottom: 15px;
     font-weight: 600;
+    margin-left: 15px;
 }
 
 .recommend_box2 {
-    width: 230px;
+    width: 240px;
     height: 320px;
     float: left;
+    
 }
 
 .recommend_img2 {
@@ -89,9 +92,13 @@
     border-radius: 10px;
     border: 1px solid #ddd;
     box-sizing: border-box;
+    margin: auto;
+    display: block;
 }
 
 .recommend_text2 {
+    margin: auto;
+    display: block;
     width: 210px;
     font-size: 24px;
 }
