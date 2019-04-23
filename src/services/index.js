@@ -71,3 +71,7 @@ export const getAlbum = (id) => {
 export const getLyrics = (id) => {
     return fetchRes(url+`/lyric?id=${id}`)
 }
+
+export const getHotSearch = () => {
+    return fetchRes(url+`/search/hot`)
+}

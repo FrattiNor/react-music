@@ -10,6 +10,11 @@ import Foot from './foot'
 
 import { menu, search, play, stop, musicMenu } from '../../assets/asset'
 
+// import delete3 from '../../assets/delete.png'
+// import looper1 from '../../assets/looper1.png'
+// import looper2 from '../../assets/looper2.png'
+// import looper3 from '../../assets/looper3.png'
+
 class index extends Component {
 	state = {
 		bannerList: ['推荐', '排行榜', '我的'],
@@ -25,7 +30,7 @@ class index extends Component {
 			this.setState({
 				delay: false
 			})
-		}, 1000)
+		}, 500)
 	}
 
 	handleClickBanner = (current) => {
@@ -75,7 +80,7 @@ class index extends Component {
 	// 		}
 	// 	}
 	// 	xhr.send();
-  //   }
+    // }
 
 	render() {
 		const { bannerList, current, bodyMargin, top, delay } = this.state;
@@ -83,14 +88,17 @@ class index extends Component {
 			transition: '0.5s',
 			marginLeft: -bodyMargin * 100 + '%'
 		}
+		const headerStyle = {
+			opacity: delay ? 0 : 1
+		}
 
 		return (
 			<div className="index">
-				{
+				{/* {
 					delay && <div className="cover">
 						<div className="loading">loading...</div>
 					</div>
-				}
+				} */}
 				
 				{/* 头部 */}
 				<div className="header">
@@ -102,17 +110,27 @@ class index extends Component {
 						<img onClick={this.handleSearch} className="header_img" src={search} />
 					</div>
 
-					<div className="header_bottom">
+					<div className="header_bottom" style={{...headerStyle}}>
 						{
 							bannerList.map((item) => {
 								return <div className={item === current ? 'header_bottom_font header_bottom_font2' : 'header_bottom_font'} key={item} onClick={() => this.handleClickBanner(item)}>{item}</div>
 							})
 						}
 					</div>
+					{
+						delay && <div className="header_bottom">
+							{
+								bannerList.map((item) => {
+									return <div className={item === current ? 'header_bottom_font header_bottom_font3' : 'header_bottom_font'} key={item}>{item}</div>
+								})
+							}
+						</div>
+					}
 				</div>
 				
 				{/* 主体 */}
 				<div className="body">
+					{/* <div className="body_box_red" /> */}
 					<div className="body_box" style={bodyBoxStyle}>
 						{
 							bannerList.map((item) => {

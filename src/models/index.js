@@ -1,4 +1,4 @@
-import { getLyrics, getAlbum, getSingerIt, getSingerSongList, getSingerSong, getSongDetail, getSlider, getSong, getDang, getSingRank, getSongRank, getRankSong, search, getSongListDetail, getSongList, getHotSinger } from '../services'
+import { getHotSearch, getLyrics, getAlbum, getSingerIt, getSingerSongList, getSingerSong, getSongDetail, getSlider, getSong, getDang, getSingRank, getSongRank, getRankSong, search, getSongListDetail, getSongList, getHotSinger } from '../services'
 
 export default {
 
@@ -16,7 +16,8 @@ export default {
             isPause: true,
             ar: 'Beyond'
         },
-        update: false
+        update: false,
+        looper: 1,
     },
 
     subscriptions: {
@@ -102,6 +103,11 @@ export default {
             const response = yield call(getLyrics, payload)
             return response
         },
+
+        *getHotSearch( _, { call }) {
+            const response = yield call(getHotSearch)
+            return response
+        },
     },
 
     reducers: {
@@ -133,6 +139,10 @@ export default {
         },
         'update'(state) {
             state.update = !state.update
+            return {...state};
+        },
+        'setLooper'(state, { payload: { looper } } ) {
+            state.looper = looper
             return {...state};
         },
     }

@@ -163,19 +163,25 @@ class Slider extends Component {
 
                 <div className="sliderBox" onTouchEnd={e => this.touchEnd(e)} onTouchMove={e => this.touchMove(e)}  onTouchStart={e => this.touchStart(e)} style={slideBoxStyle}>
                     <a className="sliderA" href={this.state.SilderLast.linkUrl} style={sliderPicStyle}>
-                        <img alt="slider" className="sliderImg" src={this.state.SilderLast.imageUrl} />
+                        <div className="slider_img_box">
+                            <img className="sliderImg" src={this.state.SilderLast.imageUrl} />
+                        </div>
                     </a>
                     {
                         this.state.theSilder.map((item, number) => {
                             return (
                                 <a className="sliderA" href={item.linkUrl} key={number} style={sliderPicStyle}>
-                                    <img alt="slider" className="sliderImg" src={item.imageUrl} />
+                                    <div className="slider_img_box">
+                                        <img className="sliderImg" src={item.imageUrl} />
+                                    </div>
                                 </a>
                             )
                         })
                     }
                     <a className="sliderA" href={this.state.SilderFirst.linkUrl} style={sliderPicStyle}>
-                        <img alt="slider" className="sliderImg" src={this.state.SilderFirst.imageUrl} />
+                        <div className="slider_img_box">
+                            <img className="sliderImg" src={this.state.SilderFirst.imageUrl} />
+                        </div>
                     </a>
                 </div>
 

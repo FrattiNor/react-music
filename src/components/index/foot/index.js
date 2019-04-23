@@ -18,6 +18,7 @@ class foot extends Component {
 
 	componentDidMount() {	
 		// this.getPlayTime()
+		setInterval(this.musicEnd, 1000)
 	}
 
 	componentWillReceiveProps() {
@@ -88,6 +89,102 @@ class foot extends Component {
 		a.push({ name: '歌曲详情', type: '歌曲详情' })
 		sessionStorage.setItem('title', JSON.stringify(a))
 		dispatch(routerRedux.push('/songDetail')) 
+	}
+
+	musicEnd = () => {
+		let player = document.getElementById('player')
+		console.log(player.ended)
+		const { music: { id }, looper } = this.props.index
+		if(player.ended) {
+			looper == 1 ? this.musicUp(id) : ( looper == 2 ? this.musicJustOne() : this.musicRandom(id) )
+		}
+	}
+
+	musicUp = (id) => {
+		let a = JSON.parse(localStorage.getItem('musicMenu')) || []
+		let theIndex = -1
+		a.forEach((item, index) => {
+			if(id == item.id) {
+				theIndex = index
+			}
+		})
+		if(theIndex == a.length - 1) {
+			theIndex = -1
+		}
+		let next = a[theIndex + 1]
+		if(next) {
+			this.changeMusic(next)
+		}
+		
+		// this.setState({
+		// 	deg: 0
+		// })
+	}
+
+	musicRandom = (id) => {
+		let a = JSON.parse(localStorage.getItem('musicMenu')) || []
+		let theIndex = -1
+		a.forEach((item, index) => {
+			if(id == item.id) {
+				theIndex = index
+			}
+		})
+		let next = theIndex
+		while(theIndex == next) {
+			next = Math.floor(Math.random()* a.length);
+			console.log('next',next)
+		}
+		next = a[next]
+		if(next) {
+			this.changeMusic(next)
+		}
+	}
+
+	musicJustOne = () => {
+		let player = document.getElementById('player')
+		player.currentTime = 0;
+		player.play()
+	}
+
+	changeMusic = (item) => {
+		const { dispatch } = this.props;
+		let ar = '';
+		let picUrl;
+		if(item.ar) {
+			item.ar.forEach((item, index) => {
+				ar += item.name + ' '
+			})
+			picUrl= item.al.picUrl
+		} else {
+			item.song.artists.forEach((item, index) => {
+				ar += item.name + ' '
+			})
+			picUrl= item.song.album.blurPicUrl
+		}
+		
+		let payload = {
+			id: item.id,
+			name: item.name,
+			picUrl: picUrl,
+			ar: ar,
+			src: `https://music.163.com/song/media/outer/url?id=${item.id}.mp3`
+		}
+
+		let a = JSON.parse(localStorage.getItem('history')) || []
+		let b = a.filter((item2)=>{
+            return item.id != item2.id
+		})
+		b.unshift(item)
+		if(b.length >= 11) {
+			b.shift()
+		}
+		console.log(b)
+		localStorage.setItem('history',JSON.stringify(b))
+		
+		dispatch({
+			type: 'index/setMusic',
+			payload
+		})
 	}
 
 	render() {

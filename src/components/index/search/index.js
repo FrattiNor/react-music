@@ -18,18 +18,33 @@ class search extends Component {
         song: [],
         singer: [],
         loveList: [],
-        menuList: []
+        menuList: [],
+        hots: []
 	}
 
 	componentDidMount() {
         this.getlove()
         this.getMenu()
+
+        this.getHotSearch()
     }
 
     componentWillReceiveProps() {
         this.getlove()
         this.getMenu()
-	}
+    }
+    
+    getHotSearch = () => {
+        const { dispatch } = this.props;
+        dispatch({
+            type: 'index/getHotSearch'
+        })
+        .then((res)=>{
+            this.setState({
+                hots: res.result.hots
+            })
+        })
+    }
 
 	getlove = () => {
 		let b = JSON.parse(localStorage.getItem('love')) || [];
@@ -242,10 +257,16 @@ class search extends Component {
 		dispatch({
 			type: 'index/update'
 		})
-	}
+    }
+    
+    hotSearch = (item) => {
+        this.setState({
+            keywords: item
+        }, this.searchText)
+    }
 
 	render() {
-        const { marginLeft, current, keywords, song, singer, loveList, menuList } = this.state
+        const { marginLeft, current, keywords, song, singer, loveList, menuList, hots } = this.state
         const { handleSearchBack } = this.props;
         const { music: { id, isPause } } = this.props.index
 
@@ -256,48 +277,81 @@ class search extends Component {
                 <img className="serach_error" src={error} onClick={this.deleteText} />
                 <img className="serach_search" src={search_black} onClick={this.searchText} />
 
-                <div className="search_content">
-                    <div className="search_content_title">
-                        <div onClick={(e) => this.handleChange('song', '0')} className={current == 'song' ? "search_content_title_text current" : 'search_content_title_text'}>单曲</div>
-                        <div onClick={(e) => this.handleChange('singer', '-100%')} className={current == 'singer' ? "search_content_title_text current" : 'search_content_title_text'}>歌手</div>
-                    </div>
+                {/* <div className="search_content"> */}
 
-                    <div className="search_content_body">
-                        <div className="search_body" style={{ marginLeft }}>
-                            <div className="search_content_song search_body_body">
-                                {/* <Song song={song} /> */}
-                                {
-                                    song.map((item, index)=>{
-                                        return <div className="songList" key={index}>
-                                            <div className="songName">{item.name}</div>
-                                            <div className="songArtists">{item.ar && item.ar.map((item, index) => { return ` ${item.name} ` })}</div>
-                                            <img src={loveList.indexOf(item.id) == -1 ? love : love_red} onClick={loveList.indexOf(item.id) == -1 ? () => this.loveMusic(item, true) :  () => this.loveMusic(item, false) } className="songLove" />
-                                            <img onClick={ menuList.indexOf(item.id) == -1 ? () => this.addMusic(item) : () => this.delMusic(item) } className="songAdd" src={menuList.indexOf(item.id) == -1 ? add : error} />
-                                            {
-                                                id === item.id ? ( isPause ? <img className="songPlay" src={play} onClick={() => this.musicPlay(false)} /> : <img className="songPlay" src={stop} onClick={() => this.musicPlay(true)} /> ) : <img className="songPlay" src={play} onClick={() => this.changeMusic(item)} />
-                                            }
-                                            {/* <img className="songPlay" src={play} /> */}
-                                        </div>
-                                    })
-                                }
-                            </div>
-                            <div className="search_content_singer search_body_body">
-                                <div className="singer_box_box">
-                                    <Singer singer={singer} />
+                     {
+                        song.length == 0 && singer.length == 0 && <div className="search_content">
+                            <div className="hot_box">
+                                <div className="search_content_hot">
+                                    <div className="hot_list_title">
+                                        热搜排行
+                                    </div>
+                                    {
+                                        hots.map((item, index)=>{
+                                            return <div className="hot_list" key={index} onClick={() => this.hotSearch(item.first)}>
+                                                {item.first}
+                                            </div>
+                                        })
+                                    }
                                 </div>
-                                
-                                {/* {
-                                    singer.map((item, index)=>{
-                                        return <div className="songList" key={index}>
-                                            <img className="singerImg" src={item.img1v1Url} />
-                                            <div className="singerName">{item.name}</div>
-                                        </div>
-                                    })
-                                } */}
                             </div>
                         </div>
-                    </div>
-                </div>
+                    }
+
+                    {
+                        ( song.length != 0 || singer.length != 0 ) && <div className="search_content">
+
+                            <div className="search_content_title">
+                                <div onClick={(e) => this.handleChange('song', '0')} className={current == 'song' ? "search_content_title_text current" : 'search_content_title_text'}>单曲</div>
+                                <div onClick={(e) => this.handleChange('singer', '-100%')} className={current == 'singer' ? "search_content_title_text current" : 'search_content_title_text'}>歌手</div>
+                            </div>
+
+                            <div className="search_content_body">
+                                <div className="search_body" style={{ marginLeft }}>
+                                    <div className="search_body_body">
+                                        {/* <Song song={song} /> */}
+                                        <div className="search_content_song">
+                                            {
+                                                song.map((item, index)=>{
+                                                    return <div className="songList" key={index}>
+                                                        <div className="songName">{item.name}</div>
+                                                        <div className="songArtists">{item.ar && item.ar.map((item, index) => { return ` ${item.name} ` })}</div>
+                                                        <img src={loveList.indexOf(item.id) == -1 ? love : love_red} onClick={loveList.indexOf(item.id) == -1 ? () => this.loveMusic(item, true) :  () => this.loveMusic(item, false) } className="songLove" />
+                                                        <img onClick={ menuList.indexOf(item.id) == -1 ? () => this.addMusic(item) : () => this.delMusic(item) } className="songAdd" src={menuList.indexOf(item.id) == -1 ? add : error} />
+                                                        {
+                                                            id === item.id ? ( isPause ? <img className="songPlay" src={play} onClick={() => this.musicPlay(false)} /> : <img className="songPlay" src={stop} onClick={() => this.musicPlay(true)} /> ) : <img className="songPlay" src={play} onClick={() => this.changeMusic(item)} />
+                                                        }
+                                                        {/* <img className="songPlay" src={play} /> */}
+                                                    </div>
+                                                })
+                                            }
+                                        </div>
+                                    </div>
+                                    <div className="search_body_body">
+                                        <div className="search_content_singer">
+                                            <Singer singer={singer} />
+                                        </div>
+                                        
+                                        {/* {
+                                            singer.map((item, index)=>{
+                                                return <div className="songList" key={index}>
+                                                    <img className="singerImg" src={item.img1v1Url} />
+                                                    <div className="singerName">{item.name}</div>
+                                                </div>
+                                            })
+                                        } */}
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        </div>
+                    }
+
+
+
+                    
+                {/* </div> */}
             </div>
 		);
 	}

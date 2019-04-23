@@ -13,6 +13,7 @@
     width: 750px;
     height: 200px;
     background-color: #D43B33;
+    position: relative;
 }
 
 .header_left {
@@ -49,6 +50,9 @@
 .header_bottom {
     height: 100px;
     width: 750px;
+    position: absolute;
+    bottom: 0;
+    left: 0;
 }
 
 .header_bottom_font {
@@ -108,14 +112,49 @@
     }
 }
 
+.header_bottom_font3::after {
+    box-sizing: border-box;
+    content: "";
+    position: absolute;
+    width: 80px;
+    height: 0;
+    border:  2px solid #fff;
+    bottom: 15px;
+    left: 85px;
+    background-color: #fff;
+    border-radius: 2px;
+    /* animation: header_bottom_font_change1 0.7s; */
+}
+
+.header_bottom_font3::before {
+    box-sizing: border-box;
+    content: "";
+    position: absolute;
+    width: 250px;
+    height: 80px;
+    top: 15px;
+    left: 0;
+    background-color: RGBA(0,0,0,0);
+    /* animation: header_bottom_font_change2 0.7s; */
+}
+
 
 /* 主体 */
+.body_box_red {
+    position: absolute;
+    background-color: #D43B33;
+    width: 750px;
+    height: 50px;
+    left: 0;
+    top: -25px;
+}
 
 .body {
     width: 750px;
     height: calc( 100% - 300px );
     background-color: #fff;
     overflow: hidden;
+    position: relative;
 }
 
 .body_box {

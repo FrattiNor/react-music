@@ -187,6 +187,25 @@
     left: 0;
 }
 
+.JinDuTiao_title_box {
+    transition: all 0s;
+    height: 3px;
+    position: absolute;
+    width: 729px;
+    top: 0;
+    left: 0;
+}
+
+.JinDuTiao_title {
+    transition: all 0s;
+    width: 21px;
+    height: 21px;
+    position: absolute;
+    background-color: #D43B33;
+    top: -9px;
+    border-radius: 50%;
+}
+
 .JinDuTiao_cover {
     height: 3px;
     width: 750px;

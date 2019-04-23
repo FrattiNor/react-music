@@ -38,6 +38,8 @@ class song extends Component {
 	}
 
 	componentWillReceiveProps() {
+		clearInterval(this.interval)
+		
 		this.getlove()
 		this.makeItem()
 
@@ -314,6 +316,13 @@ class song extends Component {
 		       
 		let curTime = Math.floor(_nextX / document.documentElement.clientWidth * allTime)
 
+		if(curTime <= 0) {
+			curTime = 0
+		}
+		if(curTime >= allTime) {
+			curTime = allTime
+		}
+
 		let CurTime = this.getMinAndSec(curTime)
 
         this.setState({
@@ -386,12 +395,22 @@ class song extends Component {
 		return newLyric
 	}
 
+	musicEnd = () => {
+		let player = document.getElementById('player')
+		console.log(player.ended)
+		const { music: { id } } = this.props.index
+		if(player.ended) {
+			this.musicUp(id)
+		}
+	}
+
 	render() {
 
 		const { menuTop, loveList, item, curTime, CurTime, allTime, ALLTime, deg, turnBack, lyrics, top } = this.state
 		const { music: { isPause, picUrl, ar, name, id } } = this.props.index
 
 		const JDT_Style = { width: curTime / allTime * 100 + '%' }
+		const JDT_Title_Style = { left: curTime / allTime * 100 + '%' }
 		const IMG_Style = { transform: `rotate(${deg}deg)` }
 		const lyric_Style = { top: top }
  
@@ -427,6 +446,9 @@ class song extends Component {
 
 					<div className="JinDuTiao_cover" />
 					<div className="JinDuTiao" style={{...JDT_Style}} />
+					<div className="JinDuTiao_title_box">
+						<div className="JinDuTiao_title" style={{...JDT_Title_Style}} />
+					</div>
 					<div className="JinDuTiao_touch" onTouchEnd={e => this.touchEnd(e)} onTouchMove={e => this.touchMove(e)}  onTouchStart={e => this.touchStart(e)} />
 
 					{

@@ -4,7 +4,7 @@ import './index.css';
 import { connect } from 'dva';
 import { routerRedux } from 'dva/router';
 
-import { play, stop, musicMenu, back, error, love, love_red } from '../../assets/asset'
+import { play, stop, musicMenu, back, error, love, love_red, del, looper1, looper2, looper3 } from '../../assets/asset'
 
 @connect(({ index }) => ({
     index
@@ -12,7 +12,7 @@ import { play, stop, musicMenu, back, error, love, love_red } from '../../assets
 class menu extends Component {
 	state = {
 		list: [],
-		loveList: []
+		loveList: [],
 	}
 
 	componentDidMount() {
@@ -122,26 +122,70 @@ class menu extends Component {
 		})
 	}
 
+	delAll = () => {
+		const { dispatch } = this.props;
+        let a = []
+		localStorage.setItem('musicMenu', JSON.stringify(a))
+		dispatch({
+			type: 'index/update'
+		})
+	}
+
+	changeLooper = () => {
+		const { looper } = this.props.index
+		const { dispatch } = this.props
+		let newLooper
+		if(looper == 3) {
+			newLooper = 1
+		} else {
+			newLooper = looper + 1
+		}
+		dispatch({
+			type: 'index/setLooper',
+			payload: {
+				looper: newLooper
+			}
+		})
+	}
+
 	render() {
 
 		const { list, loveList } = this.state
-		const { music: { id, isPause } } = this.props.index
+		const { music: { id, isPause }, looper } = this.props.index
 
 		return (
 			<div className="menu_index">
 
-				{/* <div className="songTop">
-					<img onClick={this.songBack} className="songBack" src={back} />
-				</div> */}
+				<div className="songTop2">
+					<img onClick={this.songBack} className="songLooper" src={looper == 1 ? looper1 : ( looper == 2 ? looper2 : looper3 )} onClick={this.changeLooper} />
+					<div className="looper_text">{looper == 1 ? '循环播放' : ( looper == 2 ? '单曲循环' : '随机播放' )}</div>
+					<img onClick={this.songBack} className="songDelete" src={del} onClick={this.delAll} />
+				</div>
 
-				<div className="songBody">
-					{
+				<div className="songBody2">
+					{/* {
 						list.map((item, index)=>{
 							return <div className="songList" key={index}>
 								<div className="songName">{item.name}</div>
 								<div className="songArtists">{item.ar && item.ar.map((item, index) => { return ` ${item.name} ` })}</div>
 								<img src={loveList.indexOf(item.id) == -1 ? love : love_red} onClick={loveList.indexOf(item.id) == -1 ? () => this.loveMusic(item, true) :  () => this.loveMusic(item, false) } className="songLove" />
 								<img onClick={ () => this.delMusic(item) } className="songDel" src={error} />
+								{
+									id === item.id ? ( isPause ? <img className="songPlay" src={play} onClick={() => this.musicPlay(false)} /> : <img className="songPlay" src={stop} onClick={() => this.musicPlay(true)} /> ) : <img className="songPlay" src={play} onClick={() => this.changeMusic(item)} />
+								}
+							</div>
+						})
+					} */}
+					{
+						list.map((item, index)=>{
+							return <div className="songList" key={index}>
+								<div className="songName">{item.name}</div>
+								<div className="songArtists">
+									{item.song && item.song.artists.map((item, index) => { return ` ${item.name} ` })}
+									{item.ar && item.ar.map((item, index) => { return ` ${item.name} ` })}
+								</div>
+								<img src={loveList.indexOf(item.id) == -1 ? love : love_red} onClick={loveList.indexOf(item.id) == -1 ? () => this.loveMusic(item, true) :  () => this.loveMusic(item, false) } className="songLove" />
+								<img onClick={ () => this.delMusic(item) } className="songAdd" src={error} />
 								{
 									id === item.id ? ( isPause ? <img className="songPlay" src={play} onClick={() => this.musicPlay(false)} /> : <img className="songPlay" src={stop} onClick={() => this.musicPlay(true)} /> ) : <img className="songPlay" src={play} onClick={() => this.changeMusic(item)} />
 								}

@@ -38,8 +38,8 @@
 }
 
 .singerImg {
-    width: 100px;
-    height: 100px;
+    width: 80px;
+    height: 80px;
     border-radius: 50%;
     position: absolute;
     top: 10px;
@@ -48,12 +48,14 @@
 
 .singerName {
     width: 500px;
-    height: 100px;
+    height: 80px;
     line-height: 100px;
     font-size: 32px;
     position: absolute;
     top: 10px;
     left: 160px;
+    display: flex;
+    align-items: center;
 }
 
 /* 底部 */
