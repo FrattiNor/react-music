@@ -161,7 +161,6 @@ class foot extends Component {
 			})
 			picUrl= item.song.album.blurPicUrl
 		}
-		
 		let payload = {
 			id: item.id,
 			name: item.name,
@@ -169,7 +168,6 @@ class foot extends Component {
 			ar: ar,
 			src: `https://music.163.com/song/media/outer/url?id=${item.id}.mp3`
 		}
-
 		let a = JSON.parse(localStorage.getItem('history')) || []
 		let b = a.filter((item2)=>{
             return item.id != item2.id
@@ -178,9 +176,7 @@ class foot extends Component {
 		if(b.length >= 11) {
 			b.shift()
 		}
-		console.log(b)
 		localStorage.setItem('history',JSON.stringify(b))
-		
 		dispatch({
 			type: 'index/setMusic',
 			payload

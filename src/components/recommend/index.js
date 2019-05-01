@@ -296,7 +296,7 @@ class recommend extends Component {
 				</div>
 
 				<div className="recommend2">
-					<div className="recommend_title2">推荐歌单</div>
+					<div className="recommend_title2">最新歌单</div>
 					{
 						dang.map((item, index)=>{
 							if(index < 9) {
